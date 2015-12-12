@@ -24,11 +24,13 @@ import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -60,7 +62,9 @@ public class MainActivity extends Activity {
 	          public void handleMessage(Message msg) {
 	               switch (msg.what) {
 	                    case 0:
-	                    	debugView.setText(msg.getData().getString("html"));
+	                    	debugView.setText(debugView.getText()
+	                    			+ msg.getData().getString("html")
+	                    			+ "\n");
 	                    	break;
 	               }
 	               super.handleMessage(msg);
@@ -71,7 +75,14 @@ public class MainActivity extends Activity {
 	private void runHttpsConnection() {
 		if (httpsTask == null || httpsTask.getStatus() == Status.FINISHED) {
 			httpsTask = new HttpsAsyncTask(handler);
-			httpsTask.execute("test");
+			EditText username = (EditText)findViewById(R.id.accountEdittext);
+			EditText password = (EditText)findViewById(R.id.pwdEdittext);
+			
+			String params0 = username.getText().toString();
+			String params1 = password.getText().toString();
+			Log.d(TAG, params0);
+			Log.d(TAG, params1);
+			httpsTask.execute(params0, params1);
 		}
 	}
 }

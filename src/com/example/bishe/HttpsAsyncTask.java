@@ -17,6 +17,7 @@ import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.CoreConnectionPNames;
 
 import android.app.Activity;
 import android.content.Context;
@@ -55,18 +56,26 @@ class HttpsAsyncTask extends AsyncTask<String, Void, String> {
 
 	@Override
 	protected String doInBackground(String... params) {
+		String username = params[0];
+		String password = params[1];
+
 		final String HTTPS_URL = "https://bishe-zxyuan.c9users.io/session/logincheck.php";
 
 		HttpPost request = new HttpPost(HTTPS_URL);
 		HttpClient httpClient = HttpUtils.getHttpsClient();
+		httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000); 
+		httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+		
 		try {
 			List<NameValuePair> mNameValuePair = new ArrayList<NameValuePair>();
 
-			mNameValuePair.add(new BasicNameValuePair("username", "root"));
-			mNameValuePair.add(new BasicNameValuePair("password", "password"));
+			mNameValuePair.add(new BasicNameValuePair("username", username));
+			mNameValuePair.add(new BasicNameValuePair("password", password));
+			mNameValuePair.add(new BasicNameValuePair("device", "android"));
 
 			HttpEntity httpEntity = new UrlEncodedFormEntity(mNameValuePair,
 					"utf-8");
+
 			request.setEntity(httpEntity);
 
 			HttpResponse httpResponse = httpClient.execute(request);
