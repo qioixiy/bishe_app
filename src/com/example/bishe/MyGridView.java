@@ -3,10 +3,11 @@ package com.example.bishe;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.GridView;
+
 /**
  * @Description:解决在scrollview中只显示第一行数据的问题
  * @author http://blog.csdn.net/finddreams
- */ 
+ */
 public class MyGridView extends GridView {
 	public MyGridView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -26,6 +27,5 @@ public class MyGridView extends GridView {
 				MeasureSpec.AT_MOST);
 		super.onMeasure(widthMeasureSpec, expandSpec);
 	}
-	
-	
+
 }

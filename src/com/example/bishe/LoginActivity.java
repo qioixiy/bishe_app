@@ -50,7 +50,7 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
 
-		debugView = (TextView)findViewById(R.id.debugView);
+		debugView = (TextView) findViewById(R.id.debugView);
 		httpsButton = (Button) findViewById(R.id.login);
 		httpsButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -58,31 +58,31 @@ public class LoginActivity extends Activity {
 				runHttpsConnection();
 			}
 		});
-		
+
 		handler = new Handler() {
-	          public void handleMessage(Message msg) {
-	               switch (msg.what) {
-	                    case 0:
-	                    	debugView.setText(debugView.getText()
-	                    			+ msg.getData().getString("html")
-	                    			+ "\n");
-	                    	Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-	                    	String message = "test";
-	                    	intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
-	                    	startActivity(intent);
-	                    	break;
-	               }
-	               super.handleMessage(msg);
-	          }
-	     };
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
+				case 0:
+					debugView.setText(debugView.getText()
+							+ msg.getData().getString("html") + "\n");
+					Intent intent = new Intent(LoginActivity.this,
+							MainActivity.class);
+					String message = "test";
+					intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
+					startActivity(intent);
+					break;
+				}
+				super.handleMessage(msg);
+			}
+		};
 	}
 
 	private void runHttpsConnection() {
 		if (httpsTask == null || httpsTask.getStatus() == Status.FINISHED) {
 			httpsTask = new HttpsAsyncTask(handler);
-			EditText username = (EditText)findViewById(R.id.accountEdittext);
-			EditText password = (EditText)findViewById(R.id.pwdEdittext);
-			
+			EditText username = (EditText) findViewById(R.id.accountEdittext);
+			EditText password = (EditText) findViewById(R.id.pwdEdittext);
+
 			String params0 = username.getText().toString();
 			String params1 = password.getText().toString();
 			Log.d(TAG, params0);

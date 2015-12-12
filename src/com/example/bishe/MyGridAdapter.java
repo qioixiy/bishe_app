@@ -17,8 +17,7 @@ import android.widget.TextView;
 public class MyGridAdapter extends BaseAdapter {
 	private Context mContext;
 
-	public String[] img_text = { "1", "2", "3", "4", "5", "6",
-			"7", "8", "9", };
+	public String[] img_text = { "1", "2", "3", "4", "5", "6", "7", "8", "9", };
 	public int[] imgs = { R.drawable.app_transfer, R.drawable.app_fund,
 			R.drawable.app_phonecharge, R.drawable.app_creditcard,
 			R.drawable.app_movie, R.drawable.app_lottery,
