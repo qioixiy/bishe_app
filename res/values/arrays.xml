@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 首页gridview -->
+    <string-array name="home_grid_texts">
+        <item>转账</item>
+        <item>余额宝</item>
+        <item>手机充值</item>
+        <item>信用卡还款</item>
+        <item>淘宝电影</item>
+        <item>彩票</item>
+        <item>当面付</item>
+        <item>亲密付</item>
+        <item>机票</item>
+        
+    </string-array>
+    <array name="home_grid_imgs">
+        <item>@drawable/app_transfer</item>
+        <item>@drawable/app_fund</item>
+        <item>@drawable/app_phonecharge</item>
+        <item>@drawable/app_creditcard</item>
+        <item>@drawable/app_movie</item>
+        <item>@drawable/app_lottery</item>
+        <item>@drawable/app_facepay</item>
+        <item>@drawable/app_close</item>
+        <item>@drawable/app_plane</item>
+    </array>
+
+</resources>
