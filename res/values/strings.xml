@@ -19,5 +19,8 @@
     
     <string name="ok">OK</string>
     <string name="error">error</string>
+    
+	<drawable name="clr_normal">#009ACD</drawable>
+	<drawable name="clr_pressed">#00B2EE</drawable>   
 
 </resources>

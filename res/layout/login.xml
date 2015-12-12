@@ -11,15 +11,6 @@
         android:gravity="center_vertical"
         android:orientation="horizontal" >
 
-        <Button
-            android:id="@+id/cancel"
-            android:layout_width="65.83dp"
-            android:layout_height="30.5dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/normal_btn"
-            android:text="@string/cancel"
-            android:textColor="#ffffff" />
-
         <TextView
             android:id="@+id/tv_friend_title"
             android:layout_width="wrap_content"
@@ -30,14 +21,6 @@
             android:textColor="#ffffff"
             android:textSize="20dip" />
 
-        <Button
-            android:id="@+id/login_in"
-            android:layout_width="65.83dp"
-            android:layout_height="30.5dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/normal_btn"
-            android:text="@string/login_in"
-            android:textColor="#ffffff" />
     </LinearLayout>
 
     <RelativeLayout
@@ -100,6 +83,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dip"
                 android:layout_toRightOf="@id/pwd"
+				android:inputType="textPassword"
                 android:background="@null"
                 android:hint="@string/pwd"
                 android:textSize="15sp" />
@@ -108,24 +92,32 @@
 
     <TextView
         android:id="@+id/forget_pwd"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dip"
+		android:layout_marginLeft="10dp"
         android:layout_marginTop="15dip"
         android:text="@string/forget_pwd"
         android:textColor="#29981A" />
-
-    <Button
-        android:id="@+id/login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world"
-        android:textSize="16sp" />
+    
+	<Button
+		android:id="@+id/login"
+		android:layout_width="fill_parent"
+		android:layout_height="45dp"
+		android:layout_marginTop="10dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:background="@drawable/btn_selector"
+		android:text="@string/login_in"
+		android:textColor="#ffffff"
+		android:textSize="18sp" />
+        
     <TextView
         android:id="@+id/debugView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
         android:layout_marginTop="15dip"
+        android:background="#ffffff"
         android:textColor="#000000" />
 </LinearLayout>
