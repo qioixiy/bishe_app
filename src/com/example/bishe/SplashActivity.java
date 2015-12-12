@@ -19,7 +19,7 @@ public class SplashActivity extends Activity {
 	private void startMainAvtivity() {
 		new Handler().postDelayed(new Runnable() {
 			public void run() {
-				intent = new Intent(SplashActivity.this, MainActivity.class);
+				intent = new Intent(SplashActivity.this, LoginActivity.class);
 				startActivity(intent);
 				SplashActivity.this.finish();// ½áÊø±¾Activity
 			}
