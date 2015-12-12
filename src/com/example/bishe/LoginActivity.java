@@ -20,6 +20,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Handler;
@@ -65,6 +66,10 @@ public class LoginActivity extends Activity {
 	                    	debugView.setText(debugView.getText()
 	                    			+ msg.getData().getString("html")
 	                    			+ "\n");
+	                    	Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+	                    	String message = "test";
+	                    	intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
+	                    	startActivity(intent);
 	                    	break;
 	               }
 	               super.handleMessage(msg);
