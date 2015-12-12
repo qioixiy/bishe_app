@@ -18,21 +18,25 @@ import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
-class HttpsAsyncTask extends AsyncTask<Void, Void, Void> {
+class HttpsAsyncTask extends AsyncTask<String, Void, String> {
 
 	public static final String TAG = "HttpsConnTask";
-
+	private Handler handler;
 	private StringBuffer sBuffer = new StringBuffer();
-	Context context = null;
 
-	public HttpsAsyncTask(Context applicationContext) {
-		context = applicationContext;
+	public HttpsAsyncTask(Handler _handler) {
+		this.handler = _handler;
 	}
 
 	private static class HttpUtils {
@@ -50,17 +54,16 @@ class HttpsAsyncTask extends AsyncTask<Void, Void, Void> {
 	}
 
 	@Override
-	protected Void doInBackground(Void... params) {
-		// final String HTTPS_EXAMPLE_URL = "https://www.baidu.com/";
-		final String HTTPS_EXAMPLE_URL = "https://bishe-zxyuan.c9users.io:8080/mysql/conn.php";
+	protected String doInBackground(String... params) {
+		final String HTTPS_URL = "https://bishe-zxyuan.c9users.io/session/logincheck.php";
 
-		HttpPost request = new HttpPost(HTTPS_EXAMPLE_URL);
+		HttpPost request = new HttpPost(HTTPS_URL);
 		HttpClient httpClient = HttpUtils.getHttpsClient();
 		try {
 			List<NameValuePair> mNameValuePair = new ArrayList<NameValuePair>();
 
-			mNameValuePair.add(new BasicNameValuePair("UserName", "UserName"));
-			mNameValuePair.add(new BasicNameValuePair("Password", "Password"));
+			mNameValuePair.add(new BasicNameValuePair("username", "root"));
+			mNameValuePair.add(new BasicNameValuePair("password", "password"));
 
 			HttpEntity httpEntity = new UrlEncodedFormEntity(mNameValuePair,
 					"utf-8");
@@ -92,19 +95,23 @@ class HttpsAsyncTask extends AsyncTask<Void, Void, Void> {
 			}
 		} catch (Exception e) {
 			Log.e("https", e.getMessage());
+			e.printStackTrace();
 		} finally {
-			Log.e("finally", "finally");
+			Log.e("doInBackground", "finally");
 		}
 
 		return null;
 	}
 
 	@Override
-	protected void onPostExecute(Void result) {
+	protected void onPostExecute(String result) {
 		if (!TextUtils.isEmpty(sBuffer.toString())) {
-			if (context != null) {
-				Toast.makeText(context, sBuffer.toString(), Toast.LENGTH_SHORT).show();
-			}
+			Message message = new Message();
+			message.what = 0;
+			Bundle bundle=new Bundle(); 
+			bundle.putString("html", sBuffer.toString());
+			message.setData(bundle);
+			handler.sendMessage(message);
 		}
 	}
 }

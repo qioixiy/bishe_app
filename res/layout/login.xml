@@ -107,7 +107,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/sound_help"
+        android:id="@+id/forget_pwd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dip"
@@ -116,10 +116,16 @@
         android:textColor="#29981A" />
 
     <Button
-        android:id="@+id/create_https_button"
+        android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/hello_world"
         android:textSize="16sp" />
-
+    <TextView
+        android:id="@+id/debugView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dip"
+        android:layout_marginTop="15dip"
+        android:textColor="#000000" />
 </LinearLayout>

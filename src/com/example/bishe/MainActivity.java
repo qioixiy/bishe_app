@@ -22,6 +22,8 @@ import org.apache.http.message.BasicNameValuePair;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -36,27 +38,40 @@ import android.widget.AdapterView.OnItemClickListener;
 public class MainActivity extends Activity {
 	public static final String TAG = "MainActivity";
 	private Button httpsButton;
-
 	private HttpsAsyncTask httpsTask;
+	private Handler handler;
+	private TextView debugView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
 
-		httpsButton = (Button) findViewById(R.id.create_https_button);
+		debugView = (TextView)findViewById(R.id.debugView);
+		httpsButton = (Button) findViewById(R.id.login);
 		httpsButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				runHttpsConnection();
 			}
 		});
+		
+		handler = new Handler() {
+	          public void handleMessage(Message msg) {
+	               switch (msg.what) {
+	                    case 0:
+	                    	debugView.setText(msg.getData().getString("html"));
+	                    	break;
+	               }
+	               super.handleMessage(msg);
+	          }
+	     };
 	}
 
 	private void runHttpsConnection() {
 		if (httpsTask == null || httpsTask.getStatus() == Status.FINISHED) {
-			httpsTask = new HttpsAsyncTask(getApplicationContext());
-			httpsTask.execute();
+			httpsTask = new HttpsAsyncTask(handler);
+			httpsTask.execute("test");
 		}
 	}
 }
