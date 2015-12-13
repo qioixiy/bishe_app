@@ -1,6 +1,6 @@
 package com.qioixiy.bisheecu;
 
-import com.bishe.R;
+import com.qioixiy.R;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -22,8 +22,8 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		//Intent intent = getIntent();
-		//String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+		// Intent intent = getIntent();
+		// String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 		setContentView(R.layout.activity_main);
 		initView();
 	}

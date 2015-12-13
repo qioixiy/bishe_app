@@ -59,9 +59,11 @@ class HttpsAsyncTask extends AsyncTask<String, Void, String> {
 
 		HttpPost request = new HttpPost(HTTPS_URL);
 		HttpClient httpClient = HttpUtils.getHttpsClient();
-		httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000); 
-		httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
-		
+		httpClient.getParams().setParameter(
+				CoreConnectionPNames.CONNECTION_TIMEOUT, 60000);
+		httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT,
+				60000);
+
 		try {
 			List<NameValuePair> mNameValuePair = new ArrayList<NameValuePair>();
 
@@ -113,7 +115,7 @@ class HttpsAsyncTask extends AsyncTask<String, Void, String> {
 		if (!TextUtils.isEmpty(sBuffer.toString())) {
 			Message message = new Message();
 			message.what = 0;
-			Bundle bundle=new Bundle(); 
+			Bundle bundle = new Bundle();
 			bundle.putString("html", sBuffer.toString());
 			message.setData(bundle);
 			handler.sendMessage(message);

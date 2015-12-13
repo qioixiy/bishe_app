@@ -20,10 +20,10 @@ public class HttpDownloader extends AsyncTask<String, Void, String> {
 	private URL url = null;
 	private Handler handler;
 
-	public HttpDownloader(Handler _handler)
-	{
+	public HttpDownloader(Handler _handler) {
 		handler = _handler;
 	}
+
 	/**
 	 * 根据URL下载文件，前提是这个文件当中的内容是文本，函数的返回值就是文件当中的内容 1.创建一个URL对象
 	 * 2.通过URL对象，创建一个HttpURLConnection对象 3.得到InputStram 4.从InputStream当中读取数据
@@ -116,12 +116,13 @@ public class HttpDownloader extends AsyncTask<String, Void, String> {
 				"a.html");
 		return download(arg0[0]);
 	}
+
 	@Override
 	protected void onPostExecute(String result) {
 		Log.e(TAG, result);
 		Message message = new Message();
 		message.what = 0;
-		Bundle bundle=new Bundle(); 
+		Bundle bundle = new Bundle();
 		bundle.putString("html", result.toString());
 		message.setData(bundle);
 		handler.sendMessage(message);

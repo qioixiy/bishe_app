@@ -1,7 +1,7 @@
 package com.qioixiy.bisheecu;
 
 import android.os.Bundle;
-import com.bishe.R;
+import com.qioixiy.R;
 
 import android.app.Activity;
 import android.content.Intent;

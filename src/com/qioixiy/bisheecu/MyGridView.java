@@ -10,6 +10,7 @@ import android.widget.GridView;
  */
 public class MyGridView extends GridView {
 	public static final String TAG = "MyGridView";
+
 	public MyGridView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}

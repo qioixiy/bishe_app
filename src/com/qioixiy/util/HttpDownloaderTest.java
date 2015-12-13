@@ -1,6 +1,6 @@
 package com.qioixiy.util;
 
-import com.bishe.R;
+import com.qioixiy.R;
 
 import android.support.v4.app.Fragment;
 import android.app.Activity;
