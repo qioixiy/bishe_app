@@ -1,4 +1,4 @@
-package com.bishe.util;
+package com.qioixiy.util;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -112,6 +112,8 @@ public class HttpDownloader extends AsyncTask<String, Void, String> {
 
 	@Override
 	protected String doInBackground(String... arg0) {
+		downFile("http://www.cnblogs.com/zhuawang/p/3648551.html", "voa/",
+				"a.html");
 		return download(arg0[0]);
 	}
 	@Override

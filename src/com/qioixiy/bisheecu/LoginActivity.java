@@ -1,4 +1,4 @@
-package com.bishe.ecu;
+package com.qioixiy.bisheecu;
 
 import android.os.Bundle;
 import com.bishe.R;

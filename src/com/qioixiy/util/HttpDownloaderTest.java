@@ -1,4 +1,4 @@
-package com.bishe.util;
+package com.qioixiy.util;
 
 import com.bishe.R;
 
@@ -56,7 +56,7 @@ public class HttpDownloaderTest extends Activity {
 			url = "http://http://www.csdn.net/";
 			// url = "https://www.baidu.com/";
 			// url = "https://bishe-zxyuan.c9users.io/client_api/file_list.php";
-			HttpsDownloader httpDownloader = new HttpsDownloader(handler);
+			HttpDownloader httpDownloader = new HttpDownloader(handler);
 			httpDownloader.execute(url);
 		}
 	}

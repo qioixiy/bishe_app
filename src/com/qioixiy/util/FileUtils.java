@@ -1,4 +1,4 @@
-package com.bishe.util;
+package com.qioixiy.util;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -7,8 +7,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import android.os.Environment;
+import android.util.Log;
 
 public class FileUtils {
+	private static final String TAG = "FileUtils";
 	private String SDPATH;
 
 	public String getSDPATH() {
@@ -61,6 +63,7 @@ public class FileUtils {
 		try {
 			creatSDDir(path);
 			file = creatSDFile(path + fileName);
+			Log.d(TAG, path + fileName);
 			output = new FileOutputStream(file);
 			byte buffer[] = new byte[4 * 1024];
 			while ((input.read(buffer)) != -1) {

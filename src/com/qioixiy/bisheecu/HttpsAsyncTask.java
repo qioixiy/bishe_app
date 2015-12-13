@@ -1,4 +1,4 @@
-package com.bishe.util;
+package com.qioixiy.bisheecu;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -26,13 +26,13 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 
-class HttpsDownloader extends AsyncTask<String, Void, String> {
+class HttpsAsyncTask extends AsyncTask<String, Void, String> {
 
-	public static final String TAG = "HttpsDownloader";
+	public static final String TAG = "HttpsAsyncTask";
 	private Handler handler;
 	private StringBuffer sBuffer = new StringBuffer();
 
-	public HttpsDownloader(Handler _handler) {
+	public HttpsAsyncTask(Handler _handler) {
 		this.handler = _handler;
 	}
 
@@ -52,19 +52,21 @@ class HttpsDownloader extends AsyncTask<String, Void, String> {
 
 	@Override
 	protected String doInBackground(String... params) {
+		String username = params[0];
+		String password = params[1];
 
-		final String HTTPS_URL = "https://bishe-zxyuan.c9users.io/client_api/file_list.php";
+		final String HTTPS_URL = "https://bishe-zxyuan.c9users.io/session/logincheck.php";
 
 		HttpPost request = new HttpPost(HTTPS_URL);
 		HttpClient httpClient = HttpUtils.getHttpsClient();
-		httpClient.getParams().setParameter(
-				CoreConnectionPNames.CONNECTION_TIMEOUT, 60000);
-		httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT,
-				60000);
-
+		httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000); 
+		httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+		
 		try {
 			List<NameValuePair> mNameValuePair = new ArrayList<NameValuePair>();
 
+			mNameValuePair.add(new BasicNameValuePair("username", username));
+			mNameValuePair.add(new BasicNameValuePair("password", password));
 			mNameValuePair.add(new BasicNameValuePair("device", "android"));
 
 			HttpEntity httpEntity = new UrlEncodedFormEntity(mNameValuePair,
@@ -94,14 +96,10 @@ class HttpsDownloader extends AsyncTask<String, Void, String> {
 							reader = null;
 						}
 					}
-				} else {
-					Log.i(TAG,
-							"statusLine.getStatusCode()="
-									+ statusLine.getStatusCode());
 				}
 			}
 		} catch (Exception e) {
-			Log.e("https", e.getMessage());
+			Log.e(TAG, e.getMessage());
 			e.printStackTrace();
 		} finally {
 			Log.e(TAG, "finally");
@@ -115,7 +113,7 @@ class HttpsDownloader extends AsyncTask<String, Void, String> {
 		if (!TextUtils.isEmpty(sBuffer.toString())) {
 			Message message = new Message();
 			message.what = 0;
-			Bundle bundle = new Bundle();
+			Bundle bundle=new Bundle(); 
 			bundle.putString("html", sBuffer.toString());
 			message.setData(bundle);
 			handler.sendMessage(message);
