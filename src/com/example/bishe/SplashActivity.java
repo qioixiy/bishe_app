@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 public class SplashActivity extends Activity {
-
+	public static final String TAG = "SplashActivity";
 	private Intent intent;
 
 	@Override

@@ -4,7 +4,7 @@ import android.util.SparseArray;
 import android.view.View;
 
 /**
- * @Description:万能的viewHolder
+ * @Description:ViewHolder
  * @author http://blog.csdn.net/finddreams
  */
 public class BaseViewHolder {

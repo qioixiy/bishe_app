@@ -39,7 +39,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class LoginActivity extends Activity {
-	public static final String TAG = "MainActivity";
+	public static final String TAG = "LoginActivity";
 	private Button httpsButton;
 	private HttpsAsyncTask httpsTask;
 	private Handler handler;
@@ -48,7 +48,7 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.login);
+		setContentView(R.layout.activity_login);
 
 		debugView = (TextView) findViewById(R.id.debugView);
 		httpsButton = (Button) findViewById(R.id.login);

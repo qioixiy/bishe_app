@@ -32,7 +32,7 @@ import android.widget.Toast;
 
 class HttpsAsyncTask extends AsyncTask<String, Void, String> {
 
-	public static final String TAG = "HttpsConnTask";
+	public static final String TAG = "HttpsAsyncTask";
 	private Handler handler;
 	private StringBuffer sBuffer = new StringBuffer();
 

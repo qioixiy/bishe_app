@@ -11,21 +11,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * @Description:gridview的Adapter
+ * @Description:gridviewadapter
  * @author http://blog.csdn.net/finddreams
  */
 public class MyGridAdapter extends BaseAdapter {
+	public static final String TAG = "MyGridAdapter";
 	private Context mContext;
-
-	public String[] img_text = { "1", "2", "3", "4", "5", "6", "7", "8", "9", };
-	public int[] imgs = { R.drawable.app_transfer, R.drawable.app_fund,
-			R.drawable.app_phonecharge, R.drawable.app_creditcard,
-			R.drawable.app_movie, R.drawable.app_lottery,
-			R.drawable.app_facepay, R.drawable.app_close, R.drawable.app_plane };
+	public String[] img_text;
+	public int[] imgs;
 
 	public MyGridAdapter(Context mContext) {
 		super();
 		this.mContext = mContext;
+		img_text = mContext.getResources().getStringArray(
+				R.array.home_grid_texts);
+		TypedArray ar = mContext.getResources().obtainTypedArray(
+				R.array.home_grid_imgs);
+		int len = ar.length();
+		imgs = new int[len];
+		for (int i = 0; i < len; i++) {
+			imgs[i] = ar.getResourceId(i, 0);
+		}
+		ar.recycle();
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import android.widget.Toast;
  * @author http://blog.csdn.net/finddreams
  */
 public class MainActivity extends Activity {
+	public static final String TAG = "MainActivity";
 	static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
 	private MyGridView gridview;
 
