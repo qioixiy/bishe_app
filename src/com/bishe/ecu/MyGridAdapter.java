@@ -4,7 +4,6 @@ import com.bishe.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

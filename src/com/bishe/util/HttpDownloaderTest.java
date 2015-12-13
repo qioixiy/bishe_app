@@ -1,154 +1,112 @@
 package com.bishe.util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import com.bishe.R;
 
+import android.support.v4.app.Fragment;
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
-/**
- * 
- * @Project: Android_MyDownload
- * @Desciption: 利用Http协议下载文件并存储到SDCard 1.创建一个URL对象
- *              2.通过URL对象,创建一个HttpURLConnection对象 3.得到InputStream
- *              4.从InputStream当中读取数据 存到SDCard 1.取得SDCard路径 2.利用读取大文件的IO读法，读取文件
- * 
- * @Author: LinYiSong
- * @Date: 2011-3-25~2011-3-25
- */
 public class HttpDownloaderTest extends Activity {
+	private Button downloadTxtButton;
+	private TextView testDebugView;
+	private Handler handler;
 
-	private Button downFileBtn;
-	private Button downMP3Btn;
-
-	/** Called when the activity is first created. */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(com.bishe.R.layout.activity_test);
+		setContentView(R.layout.activity_test);
 
-		downFileBtn = (Button) this.findViewById(com.bishe.R.id.test);
-		downFileBtn.setOnClickListener(new DownFileClickListener());
+		downloadTxtButton = (Button) findViewById(R.id.test);
+		downloadTxtButton.setOnClickListener(new DownloadTxtListener());
+		testDebugView = (TextView) findViewById(R.id.testDebugView);
+
+		handler = new Handler() {
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
+				case 0:
+					testDebugView.setText(testDebugView.getText()
+							+ msg.getData().getString("html") + "\n");
+					break;
+				}
+				super.handleMessage(msg);
+			}
+		};
+		/*
+		 * if (savedInstanceState == null) {
+		 * getSupportFragmentManager().beginTransaction() .add(R.id.container,
+		 * new PlaceholderFragment()).commit(); }
+		 */
 	}
 
-	/**
-	 * 
-	 * @Project: Android_MyDownload
-	 * @Desciption: 只能读取文本文件，读取mp3文件会出现内存溢出现象
-	 * @Author: LinYiSong
-	 * @Date: 2011-3-25~2011-3-25
-	 */
-	class DownFileClickListener implements OnClickListener {
+	class DownloadTxtListener implements OnClickListener {
 		@Override
 		public void onClick(View v) {
-			String urlStr = "http://172.17.54.91:8080/download/down.txt";
-			try {
-				/*
-				 * 通过URL取得HttpURLConnection 要网络连接成功，需在AndroidMainfest.xml中进行权限配置
-				 * <uses-permission android:name="android.permission.INTERNET"
-				 * />
-				 */
-				URL url = new URL(urlStr);
-				HttpURLConnection conn = (HttpURLConnection) url
-						.openConnection();
-				// 取得inputStream，并进行读取
-				InputStream input = conn.getInputStream();
-				BufferedReader in = new BufferedReader(new InputStreamReader(
-						input));
-				String line = null;
-				StringBuffer sb = new StringBuffer();
-				while ((line = in.readLine()) != null) {
-					sb.append(line);
-				}
-				System.out.println(sb.toString());
-
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			testDebugView.setText("...");
+			String url = "http://www.cnblogs.com/zhuawang/p/3648551.html";
+			url = "http://http://www.csdn.net/";
+			// url = "https://www.baidu.com/";
+			// url = "https://bishe-zxyuan.c9users.io/client_api/file_list.php";
+			HttpsDownloader httpDownloader = new HttpsDownloader(handler);
+			httpDownloader.execute(url);
 		}
 	}
 
-	/**
-	 * 
-	 * @Project: Android_MyDownload
-	 * @Desciption: 读取任意文件，并将文件保存到手机SDCard
-	 * @Author: LinYiSong
-	 * @Date: 2011-3-25~2011-3-25
-	 */
-	class DownMP3ClickListener implements OnClickListener {
-
+	class DownloadMp3Listener implements OnClickListener {
 		@Override
 		public void onClick(View v) {
-			String urlStr = "http://172.17.54.91:8080/download/1.mp3";
-			String path = "file";
-			String fileName = "2.mp3";
-			OutputStream output = null;
-			try {
-				/*
-				 * 通过URL取得HttpURLConnection 要网络连接成功，需在AndroidMainfest.xml中进行权限配置
-				 * <uses-permission android:name="android.permission.INTERNET"
-				 * />
-				 */
-				URL url = new URL(urlStr);
-				HttpURLConnection conn = (HttpURLConnection) url
-						.openConnection();
-				// 取得inputStream，并将流中的信息写入SDCard
+			HttpDownloader httpDownloader = new HttpDownloader(handler);
+			int ret = httpDownloader.downFile(
+					"http://www.cnblogs.com/zhuawang/p/3648551.html", "voa/",
+					"a.html");
+			System.out.println(ret);
+		}
+	}
 
-				/*
-				 * 写前准备 1.在AndroidMainfest.xml中进行权限配置 <uses-permission
-				 * android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-				 * 取得写入SDCard的权限 2.取得SDCard的路径：
-				 * Environment.getExternalStorageDirectory() 3.检查要保存的文件上是否已经存在
-				 * 4.不存在，新建文件夹，新建文件 5.将input流中的信息写入SDCard 6.关闭流
-				 */
-				String SDCard = Environment.getExternalStorageDirectory() + "";
-				String pathName = SDCard + "/" + path + "/" + fileName;// 文件存储路径
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
 
-				File file = new File(pathName);
-				InputStream input = conn.getInputStream();
-				if (file.exists()) {
-					System.out.println("exits");
-					return;
-				} else {
-					String dir = SDCard + "/" + path;
-					new File(dir).mkdir();// 新建文件夹
-					file.createNewFile();// 新建文件
-					output = new FileOutputStream(file);
-					// 读取大文件
-					byte[] buffer = new byte[4 * 1024];
-					while (input.read(buffer) != -1) {
-						output.write(buffer);
-					}
-					output.flush();
-				}
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				try {
-					output.close();
-					System.out.println("success");
-				} catch (IOException e) {
-					System.out.println("fail");
-					e.printStackTrace();
-				}
-			}
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	/**
+	 * A placeholder fragment containing a simple view.
+	 */
+	public static class PlaceholderFragment extends Fragment {
+
+		public PlaceholderFragment() {
 		}
 
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.fragment, container,
+					false);
+			return rootView;
+		}
 	}
+
 }

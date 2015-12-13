@@ -3,7 +3,6 @@ package com.bishe.ecu;
 import com.bishe.R;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,8 +22,8 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		Intent intent = getIntent();
-		String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+		//Intent intent = getIntent();
+		//String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 		setContentView(R.layout.activity_main);
 		initView();
 	}

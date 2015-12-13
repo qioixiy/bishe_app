@@ -9,79 +9,119 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class HttpDownloader {
-	private URL url = null;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 
+public class HttpDownloader extends AsyncTask<String, Void, String> {
+	private static final String TAG = "HttpDownloader";
+	private URL url = null;
+	private Handler handler;
+
+	public HttpDownloader(Handler _handler)
+	{
+		handler = _handler;
+	}
 	/**
-	 * 根据URL下载文本文件
+	 * 根据URL下载文件，前提是这个文件当中的内容是文本，函数的返回值就是文件当中的内容 1.创建一个URL对象
+	 * 2.通过URL对象，创建一个HttpURLConnection对象 3.得到InputStram 4.从InputStream当中读取数据
+	 * 
+	 * @param urlStr
+	 * @return
 	 */
 	public String download(String urlStr) {
 		StringBuffer sb = new StringBuffer();
 		String line = null;
 		BufferedReader buffer = null;
 		try {
+			// 创建一个URL对象
 			url = new URL(urlStr);
+			// 创建一个Http连接
 			HttpURLConnection urlConn = (HttpURLConnection) url
 					.openConnection();
+			// 使用IO流读取数据
 			buffer = new BufferedReader(new InputStreamReader(
 					urlConn.getInputStream()));
 			while ((line = buffer.readLine()) != null) {
 				sb.append(line);
 			}
 		} catch (Exception e) {
+			Log.e(TAG, "download:" + e.getMessage());
 			e.printStackTrace();
 		} finally {
 			try {
 				buffer.close();
 			} catch (Exception e) {
+				Log.e(TAG, "download buffer.close():" + e.getMessage());
 				e.printStackTrace();
 			}
 		}
 		return sb.toString();
-
 	}
 
 	/**
-	 * 下载文件并写SD卡
-	 * 
-	 * @param urlStr
-	 * @param path
-	 * @param fileName
-	 * @return 0-success,-1-fail,1-existed
+	 * 该函数返回整形 -1：代表下载文件出错 0：代表下载文件成功 1：代表文件已经存在
 	 */
 	public int downFile(String urlStr, String path, String fileName) {
 		InputStream inputStream = null;
 		try {
-			FileUtil fileUtil = new FileUtil();
-			if (fileUtil.isFileExist(path + fileName))
-				return 1;
-			else {
-				inputStream = getInputStreamFromUrl(urlStr);
-				File resultFile = fileUtil.write2SDFromInput(path, fileName,
-						inputStream);
-				if (resultFile == null)
-					return -1;
-			}
+			FileUtils fileUtils = new FileUtils();
 
+			if (fileUtils.isFileExist(path + fileName)) {
+				return 1;
+			} else {
+				inputStream = getInputStreamFromUrl(urlStr);
+				File resultFile = fileUtils.write2SDFromInput(path, fileName,
+						inputStream);
+				if (resultFile == null) {
+					return -1;
+				}
+			}
 		} catch (Exception e) {
+			Log.e(TAG, "downFile:" + e.getMessage());
 			e.printStackTrace();
+			return -1;
 		} finally {
 			try {
 				inputStream.close();
 			} catch (Exception e) {
+				Log.e(TAG, "downFile close:" + e.getMessage());
 				e.printStackTrace();
 			}
-
 		}
 		return 0;
 	}
 
+	/**
+	 * 根据URL得到输入流
+	 * 
+	 * @param urlStr
+	 * @return
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
 	public InputStream getInputStreamFromUrl(String urlStr)
 			throws MalformedURLException, IOException {
 		url = new URL(urlStr);
-		HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
-		InputStream inputStream = urlCon.getInputStream();
+		HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
+		InputStream inputStream = urlConn.getInputStream();
 		return inputStream;
+	}
 
+	@Override
+	protected String doInBackground(String... arg0) {
+		return download(arg0[0]);
+	}
+	@Override
+	protected void onPostExecute(String result) {
+		Log.e(TAG, result);
+		Message message = new Message();
+		message.what = 0;
+		Bundle bundle=new Bundle(); 
+		bundle.putString("html", result.toString());
+		message.setData(bundle);
+		handler.sendMessage(message);
 	}
 }
