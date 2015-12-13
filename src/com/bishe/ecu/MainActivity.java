@@ -1,4 +1,6 @@
-package com.example.bishe;
+package com.bishe.ecu;
+
+import com.bishe.R;
 
 import android.app.Activity;
 import android.content.Intent;

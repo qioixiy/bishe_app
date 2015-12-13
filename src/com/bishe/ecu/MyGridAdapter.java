@@ -1,4 +1,6 @@
-package com.example.bishe;
+package com.bishe.ecu;
+
+import com.bishe.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;

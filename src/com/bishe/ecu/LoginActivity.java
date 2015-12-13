@@ -1,4 +1,4 @@
-package com.example.bishe;
+package com.bishe.ecu;
 
 import android.os.Bundle;
 
@@ -18,6 +18,8 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.message.BasicNameValuePair;
+
+import com.bishe.R;
 
 import android.app.Activity;
 import android.content.Intent;
