@@ -19,8 +19,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class DownloadActivity extends Activity {
-	protected static final String TAG = "DownloadActivity";
+public class DownloadActivityTest extends Activity {
+	protected static final String TAG = "DownloadActivityTest";
 	private EditText downloadpathText;
 	private TextView resultView;
 	private ProgressBar progressBar;
@@ -42,12 +42,12 @@ public class DownloadActivity extends Activity {
 						+ Environment.getExternalStorageDirectory());
 
 				if (progressBar.getProgress() == progressBar.getMax()) {
-					Toast.makeText(DownloadActivity.this, R.string.success, 1)
+					Toast.makeText(DownloadActivityTest.this, R.string.success, 1)
 							.show();
 				}
 				break;
 			case -1:
-				Toast.makeText(DownloadActivity.this, R.string.error, 1).show();
+				Toast.makeText(DownloadActivityTest.this, R.string.error, 1).show();
 				break;
 			}
 		}
@@ -72,14 +72,15 @@ public class DownloadActivity extends Activity {
 				String path = downloadpathText.getText().toString();
 				path = "http://www.winrar.com.cn/download/winrar521scp.exe";
 				path = "https://bishe-zxyuan.c9users.io/data/upload/v0.1.dat";
+				path = "https://bishe-zxyuan.c9users.io/main/download.php?filename=v0.2.dat";
 				Log.d(TAG, Environment.getExternalStorageState()
 						+ Environment.MEDIA_MOUNTED);
 
 				if (Environment.getExternalStorageState().equals(
 						Environment.MEDIA_MOUNTED)) {
-					download(path, Environment.getExternalStorageDirectory());
+					download(path, Environment.getExternalStorageDirectory(), "v0.2.dat");
 				} else {
-					Toast.makeText(DownloadActivity.this, R.string.sdcarderror,
+					Toast.makeText(DownloadActivityTest.this, R.string.sdcarderror,
 							1).show();
 				}
 			}
@@ -92,12 +93,12 @@ public class DownloadActivity extends Activity {
 	 * @param path
 	 * @param savedir
 	 */
-	private void download(final String path, final File savedir) {
+	private void download(final String path, final File savedir, final String saveFileName) {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				FileDownloader loader = new FileDownloader(
-						DownloadActivity.this, path, savedir, 3);
+						DownloadActivityTest.this, path, savedir, 3, saveFileName);
 				progressBar.setMax(loader.getFileSize());// 设置进度条的最大刻度为文件的长度
 
 				try {

@@ -44,9 +44,9 @@
                 android:value=".HttpDownloaderTest" />
         </activity>
         <activity
-            android:name="com.qioixiy.service.DownloadActivity"
+            android:name="com.qioixiy.service.DownloadActivityTest"
             android:label="HttpDownloaderTest"
-            android:parentActivityName="com.qioixiy.service.DownloadActivity" >
+            android:parentActivityName="com.qioixiy.service.DownloadActivityTest" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".DownloadActivity" />

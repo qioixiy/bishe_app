@@ -79,7 +79,7 @@ public class FileDownloader {
 		this.data.put(threadId, pos);
 		this.fileService.update(this.downloadUrl, this.data);
 	}
-
+	
 	/**
 	 * 构建文件下载器
 	 * 
@@ -91,7 +91,7 @@ public class FileDownloader {
 	 *            下载线程数
 	 */
 	public FileDownloader(Context context, String downloadUrl,
-			File fileSaveDir, int threadNum) {
+			File fileSaveDir,int threadNum, String saveFileName) {
 		try {
 			this.context = context;
 			this.downloadUrl = downloadUrl;
@@ -123,6 +123,7 @@ public class FileDownloader {
 					throw new RuntimeException("Unkown file size ");
 
 				String filename = getFileName(conn);// 获取文件名称
+				filename = saveFileName;
 				this.saveFile = new File(fileSaveDir, filename);// 构建保存文件
 				Map<Integer, Integer> logdata = fileService
 						.getData(downloadUrl);// 获取下载记录
