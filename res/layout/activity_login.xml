@@ -109,7 +109,8 @@
 		android:background="@drawable/btn_selector"
 		android:text="@string/login_in"
 		android:textColor="#ffffff"
-		android:textSize="18sp" />
+		android:textSize="18sp"
+		android:onClick="login" />
         
     <TextView
         android:id="@+id/debugView"

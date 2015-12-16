@@ -1,4 +1,4 @@
-package com.qioixiy.common;
+package com.common;
 
 import com.qioixiy.R;
 import com.qioixiy.bisheecu.LoginActivity;

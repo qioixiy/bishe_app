@@ -1,6 +1,8 @@
 package com.qioixiy.bisheecu;
 
 import android.os.Bundle;
+
+import com.common.LoadingDialog;
 import com.qioixiy.R;
 
 import android.app.Activity;
@@ -16,10 +18,10 @@ import android.widget.TextView;
 
 public class LoginActivity extends Activity {
 	public static final String TAG = "LoginActivity";
-	private Button httpsButton;
 	private HttpsAsyncTask httpsTask;
 	private Handler handler;
 	private TextView debugView;
+	private LoadingDialog dialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +29,6 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.activity_login);
 
 		debugView = (TextView) findViewById(R.id.debugView);
-		httpsButton = (Button) findViewById(R.id.login);
-		httpsButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				runHttpsConnection();
-			}
-		});
 
 		handler = new Handler() {
 			public void handleMessage(Message msg) {
@@ -46,11 +41,18 @@ public class LoginActivity extends Activity {
 					String message = "test";
 					intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
 					startActivity(intent);
+					dialog.hide();
 					break;
 				}
 				super.handleMessage(msg);
 			}
 		};
+	}
+
+	public void login(View view) {
+		dialog = new LoadingDialog(this);
+		dialog.show();
+		runHttpsConnection();
 	}
 
 	private void runHttpsConnection() {
