@@ -15,12 +15,12 @@
             android:id="@+id/gridview"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:horizontalSpacing="0.0dip"
+            android:horizontalSpacing="1.0dip"
+            android:verticalSpacing="1.0dip"
             android:listSelector="@null"
             android:numColumns="4"
             android:scrollbars="none"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="0.0dip" />
+            android:stretchMode="columnWidth"/>
     </ScrollView>
 
 </LinearLayout>
