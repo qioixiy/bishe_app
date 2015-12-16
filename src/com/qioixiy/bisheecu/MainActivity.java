@@ -1,8 +1,10 @@
 package com.qioixiy.bisheecu;
 
 import com.qioixiy.R;
+import com.qioixiy.test.ListViewTest;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -41,6 +43,11 @@ public class MainActivity extends Activity {
 				int index = arg2 + 1;
 				Toast.makeText(getApplicationContext(), "你按下了选项：" + index,
 						Toast.LENGTH_LONG).show();
+				Intent intent = new Intent(MainActivity.this,
+						ListViewTest.class);
+				String message = "test";
+				intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
+				startActivity(intent);
 			}
 		});
 	}
