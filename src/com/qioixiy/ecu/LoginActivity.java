@@ -56,11 +56,11 @@ public class LoginActivity extends Activity {
 	private void GetTokenWithHttps() {
 		EditText username = (EditText) findViewById(R.id.accountEdittext);
 		EditText password = (EditText) findViewById(R.id.pwdEdittext);
-
-		String params0 = username.getText().toString();
-		String params1 = password.getText().toString();
-		Log.d(TAG, params0);
+		String params0 = "logincheck";
+		String params1 = username.getText().toString();
+		String params2 = password.getText().toString();
 		Log.d(TAG, params1);
+		Log.d(TAG, params2);
 		if (params0.equals("")) {
 			debugView.setText("请输入用户名");
 			return;
@@ -71,7 +71,7 @@ public class LoginActivity extends Activity {
 		}
 		if (httpsRequest == null || httpsRequest.getStatus() == Status.FINISHED) {
 			httpsRequest = new HttpsAsyncRequest(handler);
-			httpsRequest.execute(params0, params1);
+			httpsRequest.execute(params0, params1, params2);
 		}
 
 		dialog = new LoadingDialog(this);

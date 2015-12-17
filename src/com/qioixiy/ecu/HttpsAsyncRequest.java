@@ -50,11 +50,7 @@ class HttpsAsyncRequest extends AsyncTask<String, Void, String> {
 		}
 	}
 
-	@Override
-	protected String doInBackground(String... params) {
-		String username = params[0];
-		String password = params[1];
-
+	private String HandleSubCommandLogin(String username, String password) {
 		final String HTTPS_URL = "https://bishe-zxyuan.c9users.io/session/logincheck.php";
 
 		HttpPost request = new HttpPost(HTTPS_URL);
@@ -107,6 +103,17 @@ class HttpsAsyncRequest extends AsyncTask<String, Void, String> {
 			Log.e(TAG, "finally");
 		}
 
+		return null;
+	}
+	@Override
+	protected String doInBackground(String... params) {
+		String subCommand = params[0];
+
+		if (subCommand.equals("logincheck")) {
+			if (params.length == 3) {
+				return HandleSubCommandLogin(params[1], params[2]);
+			}
+		}
 		return null;
 	}
 
