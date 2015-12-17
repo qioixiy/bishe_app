@@ -50,22 +50,31 @@ public class LoginActivity extends Activity {
 	}
 
 	public void login(View view) {
-		dialog = new LoadingDialog(this);
-		dialog.show();
 		GetTokenWithHttps();
 	}
 
 	private void GetTokenWithHttps() {
+		EditText username = (EditText) findViewById(R.id.accountEdittext);
+		EditText password = (EditText) findViewById(R.id.pwdEdittext);
+
+		String params0 = username.getText().toString();
+		String params1 = password.getText().toString();
+		Log.d(TAG, params0);
+		Log.d(TAG, params1);
+		if (params0.equals("")) {
+			debugView.setText("请输入用户名");
+			return;
+		}
+		if (params1.equals("")) {
+			debugView.setText("请输入密码");
+			return;
+		}
 		if (httpsRequest == null || httpsRequest.getStatus() == Status.FINISHED) {
 			httpsRequest = new HttpsAsyncRequest(handler);
-			EditText username = (EditText) findViewById(R.id.accountEdittext);
-			EditText password = (EditText) findViewById(R.id.pwdEdittext);
-
-			String params0 = username.getText().toString();
-			String params1 = password.getText().toString();
-			Log.d(TAG, params0);
-			Log.d(TAG, params1);
 			httpsRequest.execute(params0, params1);
 		}
+
+		dialog = new LoadingDialog(this);
+		dialog.show();
 	}
 }
