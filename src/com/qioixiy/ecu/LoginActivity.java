@@ -1,11 +1,17 @@
 package com.qioixiy.ecu;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
 import android.os.Bundle;
 
 import com.common.LoadingDialog;
 import com.qioixiy.R;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask.Status;
 import android.os.Handler;
@@ -34,14 +40,42 @@ public class LoginActivity extends Activity {
 			public void handleMessage(Message msg) {
 				switch (msg.what) {
 				case 0:
-					debugView.setText(debugView.getText()
-							+ msg.getData().getString("html") + "\n");
-					Intent intent = new Intent(LoginActivity.this,
-							MainActivity.class);
-					String message = "test";
-					intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
-					startActivity(intent);
-					dialog.hide();
+					String objStr = msg.getData().getString("html");
+					debugView.setText(debugView.getText() + objStr + "\n");
+					try {
+						JSONObject jsonObj = new JSONObject(objStr);
+						String username = jsonObj.getString("username");
+						String status = jsonObj.getString("status");
+						String token = jsonObj.getString("token");
+						String errString = jsonObj.getString("errString");
+						if (status.equals("ok")) {
+							Intent intent = new Intent(LoginActivity.this,
+									MainActivity.class);
+							String message = "test";
+							intent.putExtra(MainActivity.EXTRA_MESSAGE, message);
+							startActivity(intent);
+						} else {
+							AlertDialog.Builder builder = new AlertDialog.Builder(
+									LoginActivity.this);
+							builder.setTitle("提示");
+							builder.setMessage(errString);
+							// builder.setIcon(R.drawable.icon);
+							builder.setPositiveButton("确定",
+									new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+											dialog.dismiss();
+										}
+									});
+							builder.create().show();
+						}
+
+						dialog.hide();
+					} catch (JSONException ex) {
+						Log.e(TAG, ex.getMessage());
+					}
 					break;
 				}
 				super.handleMessage(msg);
