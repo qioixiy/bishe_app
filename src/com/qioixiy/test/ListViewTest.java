@@ -14,6 +14,7 @@ import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,7 +37,23 @@ public class ListViewTest extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mData = getData();
+		Intent intent = getIntent();
+		String message = intent.getStringExtra("test");
+		ArrayList mArrayList = intent.getStringArrayListExtra("file_list");
+		mData = new ArrayList<Map<String, Object>>();
+		for (int i = 0; i < mArrayList.size(); i++) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			String title = (String) mArrayList.get(i);
+			String info = (String) mArrayList.get(i);
+			int img = R.drawable.icon;
+
+			map.put("title", title);
+			map.put("info", info);
+			map.put("img", R.drawable.icon);
+
+			mData.add(map);
+		}
+		// mData = getData();
 		MyAdapter adapter = new MyAdapter(this);
 		setListAdapter(adapter);
 	}
@@ -72,16 +89,12 @@ public class ListViewTest extends ListActivity {
 	}
 
 	public void showInfo() {
-		new AlertDialog.Builder(this)
-				.setTitle("请确认是否下载")
-				.setMessage("......")
-				.setPositiveButton("确定",
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-							}
-						}).show();
+		new AlertDialog.Builder(this).setTitle("请确认是否下载").setMessage("......")
+				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				}).show();
 	}
 
 	public final class ViewHolder {

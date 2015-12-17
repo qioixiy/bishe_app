@@ -40,7 +40,7 @@ public class LoginActivity extends Activity {
 			public void handleMessage(Message msg) {
 				switch (msg.what) {
 				case 0:
-					String objStr = msg.getData().getString("html");
+					String objStr = msg.getData().getString("data");
 					debugView.setText(debugView.getText() + objStr + "\n");
 					try {
 						JSONObject jsonObj = new JSONObject(objStr);
@@ -95,16 +95,16 @@ public class LoginActivity extends Activity {
 		String params2 = password.getText().toString();
 		Log.d(TAG, params1);
 		Log.d(TAG, params2);
-		if (params0.equals("")) {
+		if (params1.equals("")) {
 			debugView.setText("请输入用户名");
 			return;
 		}
-		if (params1.equals("")) {
+		if (params2.equals("")) {
 			debugView.setText("请输入密码");
 			return;
 		}
 		if (httpsRequest == null || httpsRequest.getStatus() == Status.FINISHED) {
-			httpsRequest = new HttpsAsyncRequest(handler);
+			httpsRequest = new HttpsAsyncRequest(handler, 0);
 			httpsRequest.execute(params0, params1, params2);
 		}
 
