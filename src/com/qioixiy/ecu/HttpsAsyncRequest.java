@@ -1,4 +1,4 @@
-package com.qioixiy.bisheecu;
+package com.qioixiy.ecu;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -26,13 +26,13 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 
-class HttpsAsyncTask extends AsyncTask<String, Void, String> {
+class HttpsAsyncRequest extends AsyncTask<String, Void, String> {
 
-	public static final String TAG = "HttpsAsyncTask";
+	public static final String TAG = "HttpsAsyncRequest";
 	private Handler handler;
 	private StringBuffer sBuffer = new StringBuffer();
 
-	public HttpsAsyncTask(Handler _handler) {
+	public HttpsAsyncRequest(Handler _handler) {
 		this.handler = _handler;
 	}
 

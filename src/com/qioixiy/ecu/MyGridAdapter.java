@@ -1,4 +1,4 @@
-package com.qioixiy.bisheecu;
+package com.qioixiy.ecu;
 
 import com.qioixiy.R;
 

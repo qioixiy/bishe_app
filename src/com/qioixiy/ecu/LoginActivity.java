@@ -1,4 +1,4 @@
-package com.qioixiy.bisheecu;
+package com.qioixiy.ecu;
 
 import android.os.Bundle;
 
@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 public class LoginActivity extends Activity {
 	public static final String TAG = "LoginActivity";
-	private HttpsAsyncTask httpsTask;
+	private HttpsAsyncRequest httpsRequest;
 	private Handler handler;
 	private TextView debugView;
 	private LoadingDialog dialog;
@@ -52,12 +52,12 @@ public class LoginActivity extends Activity {
 	public void login(View view) {
 		dialog = new LoadingDialog(this);
 		dialog.show();
-		runHttpsConnection();
+		GetTokenWithHttps();
 	}
 
-	private void runHttpsConnection() {
-		if (httpsTask == null || httpsTask.getStatus() == Status.FINISHED) {
-			httpsTask = new HttpsAsyncTask(handler);
+	private void GetTokenWithHttps() {
+		if (httpsRequest == null || httpsRequest.getStatus() == Status.FINISHED) {
+			httpsRequest = new HttpsAsyncRequest(handler);
 			EditText username = (EditText) findViewById(R.id.accountEdittext);
 			EditText password = (EditText) findViewById(R.id.pwdEdittext);
 
@@ -65,7 +65,7 @@ public class LoginActivity extends Activity {
 			String params1 = password.getText().toString();
 			Log.d(TAG, params0);
 			Log.d(TAG, params1);
-			httpsTask.execute(params0, params1);
+			httpsRequest.execute(params0, params1);
 		}
 	}
 }

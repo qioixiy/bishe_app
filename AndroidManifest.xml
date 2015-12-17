@@ -28,13 +28,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.qioixiy.bisheecu.LoginActivity"
+            android:name="com.qioixiy.ecu.LoginActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="com.qioixiy.bisheecu.MainActivity"
+            android:name="com.qioixiy.ecu.MainActivity"
             android:label="MainActivity"
-            android:parentActivityName="com.qioixiy.bisheecu.MainActivity" >
+            android:parentActivityName="com.qioixiy.ecu.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />

@@ -1,4 +1,4 @@
-package com.qioixiy.bisheecu;
+package com.qioixiy.ecu;
 
 import android.content.Context;
 import android.util.AttributeSet;
