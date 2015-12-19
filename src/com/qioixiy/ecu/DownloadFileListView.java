@@ -57,30 +57,6 @@ public class DownloadFileListView extends ListActivity {
 		setListAdapter(adapter);
 	}
 
-	private List<Map<String, Object>> getData() {
-		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("title", "v0.1");
-		map.put("info", "v0.1.dat");
-		map.put("img", R.drawable.icon);
-		list.add(map);
-
-		map = new HashMap<String, Object>();
-		map.put("title", "v0.2");
-		map.put("info", "v0.2.dat");
-		map.put("img", R.drawable.icon);
-		list.add(map);
-
-		map = new HashMap<String, Object>();
-		map.put("title", "v0.3");
-		map.put("info", "v0.3.dat");
-		map.put("img", R.drawable.icon);
-		list.add(map);
-
-		return list;
-	}
-
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 
