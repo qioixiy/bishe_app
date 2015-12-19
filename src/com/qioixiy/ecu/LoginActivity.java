@@ -64,18 +64,17 @@ public class LoginActivity extends Activity {
 									new DialogInterface.OnClickListener() {
 										@Override
 										public void onClick(
-												DialogInterface dialog,
+												DialogInterface dlg,
 												int which) {
-											dialog.dismiss();
+											dlg.dismiss();
 										}
 									});
 							builder.create().show();
 						}
-
-						dialog.hide();
 					} catch (JSONException ex) {
 						Log.e(TAG, ex.getMessage());
 					}
+					dialog.hide();
 					break;
 				}
 				super.handleMessage(msg);

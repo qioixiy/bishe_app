@@ -19,6 +19,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
 
+import com.common.httpUtils;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -107,7 +109,7 @@ class HttpsAsyncRequest extends AsyncTask<String, Void, String> {
 
 		return null;
 	}
-	
+
 	String HandleSubCommandGetFileList(String token) {
 		final String HTTPS_URL = "https://bishe-zxyuan.c9users.io/client_api/file_list.php";
 
@@ -162,6 +164,7 @@ class HttpsAsyncRequest extends AsyncTask<String, Void, String> {
 
 		return null;
 	}
+
 	@Override
 	protected String doInBackground(String... params) {
 		String subCommand = params[0];
@@ -173,6 +176,18 @@ class HttpsAsyncRequest extends AsyncTask<String, Void, String> {
 		} else if (subCommand.equals("file_list")) {
 			if (params.length == 2) {
 				HandleSubCommandGetFileList("token");
+			}
+		} else {
+			try {
+				String s = httpUtils
+						.doHttpsPost(
+								"https://bishe-zxyuan.c9users.io/session/logincheck.php",
+								"device=android&username=test&password=password");
+				Log.d(TAG, s);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				Log.e(TAG, e.toString());
+				e.printStackTrace();
 			}
 		}
 		return null;
