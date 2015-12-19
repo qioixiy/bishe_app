@@ -42,12 +42,13 @@ public class DownloadActivityTest extends Activity {
 						+ Environment.getExternalStorageDirectory());
 
 				if (progressBar.getProgress() == progressBar.getMax()) {
-					Toast.makeText(DownloadActivityTest.this, R.string.success, 1)
-							.show();
+					Toast.makeText(DownloadActivityTest.this, R.string.success,
+							1).show();
 				}
 				break;
 			case -1:
-				Toast.makeText(DownloadActivityTest.this, R.string.error, 1).show();
+				Toast.makeText(DownloadActivityTest.this, R.string.error, 1)
+						.show();
 				break;
 			}
 		}
@@ -78,10 +79,11 @@ public class DownloadActivityTest extends Activity {
 
 				if (Environment.getExternalStorageState().equals(
 						Environment.MEDIA_MOUNTED)) {
-					download(path, Environment.getExternalStorageDirectory(), "v0.2.dat");
+					download(path, Environment.getExternalStorageDirectory(),
+							"v0.2.dat");
 				} else {
-					Toast.makeText(DownloadActivityTest.this, R.string.sdcarderror,
-							1).show();
+					Toast.makeText(DownloadActivityTest.this,
+							R.string.sdcarderror, 1).show();
 				}
 			}
 		});
@@ -93,12 +95,14 @@ public class DownloadActivityTest extends Activity {
 	 * @param path
 	 * @param savedir
 	 */
-	private void download(final String path, final File savedir, final String saveFileName) {
+	private void download(final String path, final File savedir,
+			final String saveFileName) {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				FileDownloader loader = new FileDownloader(
-						DownloadActivityTest.this, path, savedir, 3, saveFileName);
+						DownloadActivityTest.this, path, savedir, 3,
+						saveFileName);
 				progressBar.setMax(loader.getFileSize());// 设置进度条的最大刻度为文件的长度
 
 				try {
