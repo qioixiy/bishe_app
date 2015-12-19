@@ -62,33 +62,25 @@ public class DownloadFileActivity extends Activity {
 		setContentView(R.layout.activity_download);
 		Intent intent = getIntent();
 		String url = intent.getStringExtra("url");
-		downloadpathText = (EditText) this.findViewById(R.id.path);
+		String path = intent.getStringExtra("path");
 		progressBar = (ProgressBar) this.findViewById(R.id.downloadbar);
 		resultView = (TextView) this.findViewById(R.id.resultView);
-		Button button = (Button) this.findViewById(R.id.button);
 
-		button.setOnClickListener(new View.OnClickListener() {
+		DownloadStart(url, path);
+	}
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				String path = downloadpathText.getText().toString();
-				path = "http://www.winrar.com.cn/download/winrar521scp.exe";
-				path = "https://bishe-zxyuan.c9users.io/data/upload/v0.1.dat";
-				path = "https://bishe-zxyuan.c9users.io/main/download.php?filename=v0.2.dat";
-				Log.d(TAG, Environment.getExternalStorageState()
-						+ Environment.MEDIA_MOUNTED);
+	void DownloadStart(String url, String path) {
 
-				if (Environment.getExternalStorageState().equals(
-						Environment.MEDIA_MOUNTED)) {
-					download(path, Environment.getExternalStorageDirectory(),
-							"v0.2.dat");
-				} else {
-					Toast.makeText(DownloadFileActivity.this,
-							R.string.sdcarderror, 1).show();
-				}
-			}
-		});
+		Log.d(TAG, Environment.getExternalStorageState()
+				+ Environment.MEDIA_MOUNTED);
+
+		if (Environment.getExternalStorageState().equals(
+				Environment.MEDIA_MOUNTED)) {
+			download(url, Environment.getExternalStorageDirectory(), "v0.2.dat");
+		} else {
+			Toast.makeText(DownloadFileActivity.this, R.string.sdcarderror, 1)
+					.show();
+		}
 	}
 
 	/**
