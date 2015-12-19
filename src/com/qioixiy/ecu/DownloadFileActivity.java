@@ -1,4 +1,4 @@
-package com.qioixiy.service;
+package com.qioixiy.ecu;
 
 import java.io.File;
 
@@ -19,7 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class DownloadActivityTest extends Activity {
+public class DownloadFileActivity extends Activity {
 	protected static final String TAG = "DownloadActivityTest";
 	private EditText downloadpathText;
 	private TextView resultView;
@@ -42,12 +42,12 @@ public class DownloadActivityTest extends Activity {
 						+ Environment.getExternalStorageDirectory());
 
 				if (progressBar.getProgress() == progressBar.getMax()) {
-					Toast.makeText(DownloadActivityTest.this, R.string.success,
+					Toast.makeText(DownloadFileActivity.this, R.string.success,
 							1).show();
 				}
 				break;
 			case -1:
-				Toast.makeText(DownloadActivityTest.this, R.string.error, 1)
+				Toast.makeText(DownloadFileActivity.this, R.string.error, 1)
 						.show();
 				break;
 			}
@@ -82,7 +82,7 @@ public class DownloadActivityTest extends Activity {
 					download(path, Environment.getExternalStorageDirectory(),
 							"v0.2.dat");
 				} else {
-					Toast.makeText(DownloadActivityTest.this,
+					Toast.makeText(DownloadFileActivity.this,
 							R.string.sdcarderror, 1).show();
 				}
 			}
@@ -101,7 +101,7 @@ public class DownloadActivityTest extends Activity {
 			@Override
 			public void run() {
 				FileDownloader loader = new FileDownloader(
-						DownloadActivityTest.this, path, savedir, 3,
+						DownloadFileActivity.this, path, savedir, 3,
 						saveFileName);
 				progressBar.setMax(loader.getFileSize());// 设置进度条的最大刻度为文件的长度
 
