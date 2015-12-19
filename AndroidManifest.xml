@@ -48,16 +48,16 @@
                 android:value=".HttpDownloaderTest" />
         </activity>
         <activity
-            android:name="com.qioixiy.service.DownloadActivityTest"
-            android:label="HttpDownloaderTest"
-            android:parentActivityName="com.qioixiy.service.DownloadActivityTest" >
+            android:name="com.qioixiy.ecu.DownloadFileListView"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.qioixiy.ecu.DownloadFileActivity"
+            android:label="DownloadFileActivity"
+            android:parentActivityName="com.qioixiy.ecu.DownloadFileActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".DownloadActivity" />
-        </activity>
-        <activity
-            android:name="com.qioixiy.ecu.DownloadFileListView"
-            android:label="@string/app_name" >
         </activity>
     </application>
 

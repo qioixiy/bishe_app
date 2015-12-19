@@ -7,6 +7,7 @@ import com.qioixiy.network.DownloadProgressListener;
 import com.qioixiy.network.FileDownloader;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -20,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class DownloadFileActivity extends Activity {
-	protected static final String TAG = "DownloadActivityTest";
+	protected static final String TAG = "DownloadFileActivity";
 	private EditText downloadpathText;
 	private TextView resultView;
 	private ProgressBar progressBar;
@@ -59,7 +60,8 @@ public class DownloadFileActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_download);
-
+		Intent intent = getIntent();
+		String url = intent.getStringExtra("url");
 		downloadpathText = (EditText) this.findViewById(R.id.path);
 		progressBar = (ProgressBar) this.findViewById(R.id.downloadbar);
 		resultView = (TextView) this.findViewById(R.id.resultView);

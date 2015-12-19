@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.qioixiy.R;
 
 import android.app.AlertDialog;
@@ -16,6 +19,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Handler.Callback;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,12 +32,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-/**
- * @author allin
- * 
- */
 public class DownloadFileListView extends ListActivity {
-
+	private Handler handler;
+	private static final String TAG = "DownloadFileListView";
 	private List<Map<String, Object>> mData;
 
 	@Override
@@ -52,24 +55,29 @@ public class DownloadFileListView extends ListActivity {
 
 			mData.add(map);
 		}
-		// mData = getData();
-		MyAdapter adapter = new MyAdapter(this);
+		DownloadFileListViewAdapter adapter = new DownloadFileListViewAdapter(
+				this);
 		setListAdapter(adapter);
+		handler = new Handler() {
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
+				case 0:
+					String url = msg.getData().getString("url");
+					Intent intent = new Intent(DownloadFileListView.this,
+							DownloadFileActivity.class);
+					intent.putExtra("url", url);
+					startActivity(intent);
+					break;
+				}
+				super.handleMessage(msg);
+			}
+		};
 	}
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 
-		Log.v("MyListView4-click", (String) mData.get(position).get("title"));
-	}
-
-	public void showInfo() {
-		new AlertDialog.Builder(this).setTitle("请确认是否下载").setMessage("......")
-				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-					}
-				}).show();
+		Log.v(TAG, (String) mData.get(position).get("title"));
 	}
 
 	public final class ViewHolder {
@@ -79,11 +87,11 @@ public class DownloadFileListView extends ListActivity {
 		public Button viewBtn;
 	}
 
-	public class MyAdapter extends BaseAdapter {
+	public class DownloadFileListViewAdapter extends BaseAdapter {
 
 		private LayoutInflater mInflater;
 
-		public MyAdapter(Context context) {
+		public DownloadFileListViewAdapter(Context context) {
 			this.mInflater = LayoutInflater.from(context);
 		}
 
@@ -129,15 +137,28 @@ public class DownloadFileListView extends ListActivity {
 			holder.title.setText((String) mData.get(position).get("title"));
 			holder.info.setText((String) mData.get(position).get("info"));
 
+			holder.viewBtn.setTag((String) mData.get(position).get("title"));
 			holder.viewBtn.setOnClickListener(new View.OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					showInfo();
+					Button btn = (Button) v;
+					String str = (String) btn.getTag();
+					urlIntentDownloadFileActivity(str);
 				}
 			});
 
 			return convertView;
+		}
+
+		public void urlIntentDownloadFileActivity(String url) {
+			
+			Message message = new Message();
+			message.what = 0;
+			Bundle bundle = new Bundle();
+			bundle.putString("url", url);
+			message.setData(bundle);
+			handler.sendMessage(message);
 		}
 	}
 }
