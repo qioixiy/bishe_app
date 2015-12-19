@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.qioixiy.test;
+package com.qioixiy.ecu;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +30,7 @@ import android.widget.TextView;
  * @author allin
  * 
  */
-public class ListViewTest extends ListActivity {
+public class DownloadFileListView extends ListActivity {
 
 	private List<Map<String, Object>> mData;
 
@@ -38,8 +38,7 @@ public class ListViewTest extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent intent = getIntent();
-		String message = intent.getStringExtra("test");
-		ArrayList mArrayList = intent.getStringArrayListExtra("file_list");
+		ArrayList<?> mArrayList = intent.getStringArrayListExtra("file_list");
 		mData = new ArrayList<Map<String, Object>>();
 		for (int i = 0; i < mArrayList.size(); i++) {
 			Map<String, Object> map = new HashMap<String, Object>();
@@ -49,7 +48,7 @@ public class ListViewTest extends ListActivity {
 
 			map.put("title", title);
 			map.put("info", info);
-			map.put("img", R.drawable.icon);
+			map.put("img", img);
 
 			mData.add(map);
 		}

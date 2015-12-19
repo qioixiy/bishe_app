@@ -8,7 +8,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.qioixiy.R;
-import com.qioixiy.test.ListViewTest;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -61,7 +60,7 @@ public class MainActivity extends Activity {
 						}
 
 						Intent intent = new Intent(MainActivity.this,
-								ListViewTest.class);
+								DownloadFileListView.class);
 						intent.putExtra("test", "test");
 						intent.putStringArrayListExtra("file_list", mArrayList);
 						startActivity(intent);
