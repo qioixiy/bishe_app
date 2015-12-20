@@ -41,7 +41,7 @@ public class LoginActivity extends Activity {
 				switch (msg.what) {
 				case 0:
 					String objStr = msg.getData().getString("data");
-					debugView.setText(debugView.getText() + objStr + "\n");
+					//debugView.setText(debugView.getText() + objStr + "\n");
 					try {
 						JSONObject jsonObj = new JSONObject(objStr);
 						String username = jsonObj.getString("username");

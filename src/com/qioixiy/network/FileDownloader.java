@@ -91,8 +91,9 @@ public class FileDownloader {
 	 *            下载线程数
 	 */
 	public FileDownloader(Context context, String downloadUrl,
-			File fileSaveDir,int threadNum, String saveFileName) {
+			String SaveDir,int threadNum, String saveFileName) {
 		try {
+			File fileSaveDir = new File(SaveDir);
 			this.context = context;
 			this.downloadUrl = downloadUrl;
 			fileService = new FileService(this.context);

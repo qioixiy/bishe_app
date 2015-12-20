@@ -7,6 +7,7 @@ import com.qioixiy.network.DownloadProgressListener;
 import com.qioixiy.network.FileDownloader;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,10 +23,11 @@ import android.widget.Toast;
 
 public class DownloadFileActivity extends Activity {
 	protected static final String TAG = "DownloadFileActivity";
+	private String downloadPath = null;
+	private String fileName = null;
 	private EditText downloadpathText;
 	private TextView resultView;
 	private ProgressBar progressBar;
-
 	/**
 	 * 当Handler被创建会关联到创建它的当前线程的消息队列，该类用于往消息队列发送消息 消息队列中的消息由当前线程内部进行处理
 	 */
@@ -39,12 +41,12 @@ public class DownloadFileActivity extends Activity {
 				float num = (float) progressBar.getProgress()
 						/ (float) progressBar.getMax();
 				int result = (int) (num * 100);
-				resultView.setText(result + "%" + "@"
-						+ Environment.getExternalStorageDirectory());
+				resultView.setText(result + "%");
 
 				if (progressBar.getProgress() == progressBar.getMax()) {
-					Toast.makeText(DownloadFileActivity.this, R.string.success,
+					Toast.makeText(DownloadFileActivity.this, fileName + "下载成功",
 							1).show();
+					DownloadFileActivity.this.finish();
 				}
 				break;
 			case -1:
@@ -66,6 +68,8 @@ public class DownloadFileActivity extends Activity {
 		progressBar = (ProgressBar) this.findViewById(R.id.downloadbar);
 		resultView = (TextView) this.findViewById(R.id.resultView);
 
+		downloadPath = getExternalFilesDir("download").getAbsolutePath();
+		this.fileName = fileName;
 		DownloadStart(url, fileName);
 	}
 
@@ -76,7 +80,7 @@ public class DownloadFileActivity extends Activity {
 
 		if (Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
-			download(url, Environment.getExternalStorageDirectory(), fileName);
+			download(url, downloadPath, fileName);
 		} else {
 			Toast.makeText(DownloadFileActivity.this, R.string.sdcarderror, 1)
 					.show();
@@ -89,7 +93,7 @@ public class DownloadFileActivity extends Activity {
 	 * @param path
 	 * @param savedir
 	 */
-	private void download(final String path, final File savedir,
+	private void download(final String path, final String savedir,
 			final String saveFileName) {
 		new Thread(new Runnable() {
 			@Override

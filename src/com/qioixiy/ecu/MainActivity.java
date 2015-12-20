@@ -1,7 +1,9 @@
 package com.qioixiy.ecu;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,6 +15,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -74,6 +77,14 @@ public class MainActivity extends Activity {
 		};
 	}
 
+	private void GotoFileListActivity() {
+		if (httpsRequest == null
+				|| httpsRequest.getStatus() == Status.FINISHED) {
+			httpsRequest = new HttpsAsyncRequest(handler, 0);
+			String token = "";
+			httpsRequest.execute("file_list", token);
+		}
+	}
 	private void initView() {
 		gridview = (MyGridView) findViewById(R.id.gridview);
 		gridview.setAdapter(new MyGridAdapter(this));
@@ -83,17 +94,21 @@ public class MainActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				// TODO Auto-generated method stub
-				int index = arg2 + 1;
-				Toast.makeText(getApplicationContext(), "你按下了选项：" + index,
-						Toast.LENGTH_LONG).show();
-
-				if (httpsRequest == null
-						|| httpsRequest.getStatus() == Status.FINISHED) {
-					httpsRequest = new HttpsAsyncRequest(handler, 0);
-					String token = "";
-					httpsRequest.execute("file_list", token);
+				String[] strs = getResources().getStringArray(
+						R.array.home_grid_texts);
+				switch(arg2) {
+				case 0: break;
+				case 1: GotoFileListActivity(); return;
+				case 2: break;
+				case 3: break;
+				case 4: break;
+				case 5: break;
+				case 6: break;
+				case 7: break;
+				default: break;
 				}
+				Toast.makeText(MainActivity.this, "没有实现",
+						1).show();
 			}
 		});
 	}
