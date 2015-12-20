@@ -63,11 +63,11 @@ public class DownloadFileListView extends ListActivity {
 				switch (msg.what) {
 				case 0:
 					String url = msg.getData().getString("url");
-					String path = msg.getData().getString("path");
+					String fileName = msg.getData().getString("fileName");
 					Intent intent = new Intent(DownloadFileListView.this,
 							DownloadFileActivity.class);
 					intent.putExtra("url", url);
-					intent.putExtra("path", path);
+					intent.putExtra("fileName", fileName);
 					startActivity(intent);
 					break;
 				}
@@ -145,22 +145,23 @@ public class DownloadFileListView extends ListActivity {
 				@Override
 				public void onClick(View v) {
 					Button btn = (Button) v;
-					String str = (String) btn.getTag();
-					urlIntentDownloadFileActivity("https://bishe-zxyuan.c9users.io/main/download.php?filename="
-							+ str, str);
+					String fileName = (String) btn.getTag();
+					urlIntentDownloadFileActivity("https://bishe-zxyuan.c9users.io/main/download.php"
+					+ "?filename=" + fileName,
+					fileName);
 				}
 			});
 
 			return convertView;
 		}
 
-		public void urlIntentDownloadFileActivity(String url, String path) {
+		public void urlIntentDownloadFileActivity(String url, String fileName) {
 
 			Message message = new Message();
 			message.what = 0;
 			Bundle bundle = new Bundle();
 			bundle.putString("url", url);
-			bundle.putString("path", path);
+			bundle.putString("fileName", fileName);
 			message.setData(bundle);
 			handler.sendMessage(message);
 		}

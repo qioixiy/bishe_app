@@ -62,21 +62,21 @@ public class DownloadFileActivity extends Activity {
 		setContentView(R.layout.activity_download);
 		Intent intent = getIntent();
 		String url = intent.getStringExtra("url");
-		String path = intent.getStringExtra("path");
+		String fileName = intent.getStringExtra("fileName");
 		progressBar = (ProgressBar) this.findViewById(R.id.downloadbar);
 		resultView = (TextView) this.findViewById(R.id.resultView);
 
-		DownloadStart(url, path);
+		DownloadStart(url, fileName);
 	}
 
-	void DownloadStart(String url, String path) {
+	void DownloadStart(String url, String fileName) {
 
 		Log.d(TAG, Environment.getExternalStorageState()
 				+ Environment.MEDIA_MOUNTED);
 
 		if (Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
-			download(url, Environment.getExternalStorageDirectory(), "v0.2.dat");
+			download(url, Environment.getExternalStorageDirectory(), fileName);
 		} else {
 			Toast.makeText(DownloadFileActivity.this, R.string.sdcarderror, 1)
 					.show();
