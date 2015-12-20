@@ -11,6 +11,7 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.common.httpUtils;
 import com.qioixiy.R;
 
 import android.app.AlertDialog;
@@ -146,7 +147,7 @@ public class DownloadFileListView extends ListActivity {
 				public void onClick(View v) {
 					Button btn = (Button) v;
 					String fileName = (String) btn.getTag();
-					urlIntentDownloadFileActivity("https://bishe-zxyuan.c9users.io/main/download.php"
+					urlIntentDownloadFileActivity(httpUtils.hostname + "/main/download.php"
 					+ "?filename=" + fileName,
 					fileName);
 				}

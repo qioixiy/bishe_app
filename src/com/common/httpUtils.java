@@ -39,7 +39,7 @@ import android.util.Log;
 
 public class httpUtils {
 	private static final int CONNECTION_TIMEOUT = 20000;
-
+	public static final String hostname = "http://120.25.69.19";
     public static String doHttpGet(String serverURL) throws Exception {
         HttpParams httpParameters = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(httpParameters, CONNECTION_TIMEOUT);

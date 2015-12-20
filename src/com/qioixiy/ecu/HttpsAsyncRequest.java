@@ -55,7 +55,7 @@ class HttpsAsyncRequest extends AsyncTask<String, Void, String> {
 	}
 
 	private String HandleSubCommandLogin(String username, String password) {
-		final String HTTPS_URL = "https://bishe-zxyuan.c9users.io/session/logincheck.php";
+		final String HTTPS_URL = httpUtils.hostname + "/session/logincheck.php";
 
 		HttpPost request = new HttpPost(HTTPS_URL);
 		HttpClient httpClient = HttpUtils.getHttpsClient();
@@ -111,7 +111,7 @@ class HttpsAsyncRequest extends AsyncTask<String, Void, String> {
 	}
 
 	String HandleSubCommandGetFileList(String token) {
-		final String HTTPS_URL = "https://bishe-zxyuan.c9users.io/client_api/file_list.php";
+		final String HTTPS_URL = httpUtils.hostname + "/client_api/file_list.php";
 
 		HttpPost request = new HttpPost(HTTPS_URL);
 		HttpClient httpClient = HttpUtils.getHttpsClient();
@@ -181,7 +181,7 @@ class HttpsAsyncRequest extends AsyncTask<String, Void, String> {
 			try {
 				String s = httpUtils
 						.doHttpsPost(
-								"https://bishe-zxyuan.c9users.io/session/logincheck.php",
+								httpUtils.hostname + "/session/logincheck.php",
 								"device=android&username=test&password=password");
 				Log.d(TAG, s);
 			} catch (Exception e) {
