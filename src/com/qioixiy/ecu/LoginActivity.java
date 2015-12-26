@@ -42,7 +42,7 @@ public class LoginActivity extends Activity {
 				switch (msg.what) {
 				case 0:
 					String objStr = msg.getData().getString("data");
-					//debugView.setText(debugView.getText() + objStr + "\n");
+					// debugView.setText(debugView.getText() + objStr + "\n");
 					try {
 						JSONObject jsonObj = new JSONObject(objStr);
 						String username = jsonObj.getString("username");
@@ -65,8 +65,7 @@ public class LoginActivity extends Activity {
 									new DialogInterface.OnClickListener() {
 										@Override
 										public void onClick(
-												DialogInterface dlg,
-												int which) {
+												DialogInterface dlg, int which) {
 											dlg.dismiss();
 										}
 									});
@@ -90,22 +89,20 @@ public class LoginActivity extends Activity {
 	private void GetTokenWithHttps() {
 		EditText username = (EditText) findViewById(R.id.accountEdittext);
 		EditText password = (EditText) findViewById(R.id.pwdEdittext);
-		String params0 = "logincheck";
-		String params1 = username.getText().toString();
-		String params2 = password.getText().toString();
-		Log.d(TAG, params1);
-		Log.d(TAG, params2);
-		if (params1.equals("")) {
+		if (username.getText().toString().equals("")) {
 			debugView.setText("请输入用户名");
 			return;
 		}
-		if (params2.equals("")) {
+		if (password.getText().toString().equals("")) {
 			debugView.setText("请输入密码");
 			return;
 		}
 		if (httpsRequest == null || httpsRequest.getStatus() == Status.FINISHED) {
 			httpsRequest = new HttpsAsyncPostRequest(handler, 0);
-			httpsRequest.execute(params0, params1, params2);
+
+			httpsRequest.execute(Common.ServerIp + "/session/logincheck.php",
+					"username", username.getText().toString(), "password",
+					password.getText().toString());
 		}
 
 		dialog = new LoadingDialog(this);

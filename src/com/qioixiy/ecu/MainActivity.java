@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.common.Common;
 import com.qioixiy.R;
 
 import android.app.Activity;
@@ -78,33 +79,35 @@ public class MainActivity extends Activity {
 	}
 
 	private void GotoFileListActivity() {
-		if (httpsRequest == null
-				|| httpsRequest.getStatus() == Status.FINISHED) {
+		if (httpsRequest == null || httpsRequest.getStatus() == Status.FINISHED) {
 			httpsRequest = new HttpsAsyncPostRequest(handler, 0);
 			String token = "";
-			httpsRequest.execute("file_list", token);
+
+			httpsRequest.execute(Common.ServerIp + "/client_api/file_list.php",
+					"token", token);
 		}
 	}
+
 	private void GotoLocalFileListViewActivity() {
-		Intent intent = new Intent(MainActivity.this,
-				LocalFileListView.class);
+		Intent intent = new Intent(MainActivity.this, LocalFileListView.class);
 		startActivity(intent);
 	}
-	
+
 	private void CheckUpdate() {
-		//client_api/update_check.php;
-		HttpsAsyncPostRequest mHttpsAsyncRequest = new HttpsAsyncPostRequest(new Handler(){
-			public void handleMessage(Message msg) {
-				switch (msg.what) {
-				case 0:
-					
-					break;
-				}
-				super.handleMessage(msg);
-			}
-		}, 0);
+		// client_api/update_check.php;
+		HttpsAsyncPostRequest mHttpsAsyncRequest = new HttpsAsyncPostRequest(
+				new Handler() {
+					public void handleMessage(Message msg) {
+						switch (msg.what) {
+						case 0:
+
+							break;
+						}
+						super.handleMessage(msg);
+					}
+				}, 0);
 		String token = "";
-		mHttpsAsyncRequest.execute("file_list", token);
+		mHttpsAsyncRequest.execute("update_check", token);
 	}
 
 	private void initView() {
@@ -118,19 +121,30 @@ public class MainActivity extends Activity {
 					long arg3) {
 				String[] strs = getResources().getStringArray(
 						R.array.home_grid_texts);
-				switch(arg2) {
-				case 0: CheckUpdate(); return;
-				case 1: GotoFileListActivity(); return;
-				case 2: break;
-				case 3: break;
-				case 4: break;
-				case 5: GotoLocalFileListViewActivity(); return;
-				case 6: break;
-				case 7: break;
-				default: break;
+				switch (arg2) {
+				case 0:
+					CheckUpdate();
+					return;
+				case 1:
+					GotoFileListActivity();
+					return;
+				case 2:
+					break;
+				case 3:
+					break;
+				case 4:
+					break;
+				case 5:
+					GotoLocalFileListViewActivity();
+					return;
+				case 6:
+					break;
+				case 7:
+					break;
+				default:
+					break;
 				}
-				Toast.makeText(MainActivity.this, "没有实现",
-						1).show();
+				Toast.makeText(MainActivity.this, "没有实现", 1).show();
 			}
 		});
 	}

@@ -34,7 +34,8 @@ public class LocalFileListView extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mData = new ArrayList<Map<String, Object>>();
-		File[] files = new File(getExternalFilesDir("download").toString())
+		String path = getExternalFilesDir("download").toString();
+		File[] files = new File(path)
 				.listFiles();
 		for (int i = 0; i < files.length; i++) {
 			String file = files[i].toString();

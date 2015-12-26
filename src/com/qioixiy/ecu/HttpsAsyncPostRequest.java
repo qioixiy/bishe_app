@@ -55,22 +55,24 @@ class HttpsAsyncPostRequest extends AsyncTask<String, Void, String> {
 		}
 	}
 
-	private String HandleSubCommandLogin(String username, String password) {
-		final String HTTPS_URL = Common.ServerIp + "/session/logincheck.php";
+	String doCommon(String... strings) {
+		String url = strings[0];
 
-		HttpPost request = new HttpPost(HTTPS_URL);
+		StringBuffer mBuffer = new StringBuffer();
+		List<NameValuePair> mNameValuePair = new ArrayList<NameValuePair>();
+		mNameValuePair.add(new BasicNameValuePair("device", "android"));
+		for (int index = 1; index < strings.length;) {
+			mNameValuePair.add(new BasicNameValuePair(strings[index++],
+					strings[index++]));
+		}
+
+		HttpPost request = new HttpPost(url);
 		HttpClient httpClient = HttpUtils.getHttpsClient();
 		httpClient.getParams().setParameter(
 				CoreConnectionPNames.CONNECTION_TIMEOUT, 60000);
 		httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT,
 				60000);
-
 		try {
-			List<NameValuePair> mNameValuePair = new ArrayList<NameValuePair>();
-
-			mNameValuePair.add(new BasicNameValuePair("username", username));
-			mNameValuePair.add(new BasicNameValuePair("password", password));
-			mNameValuePair.add(new BasicNameValuePair("device", "android"));
 
 			HttpEntity httpEntity = new UrlEncodedFormEntity(mNameValuePair,
 					"utf-8");
@@ -88,9 +90,9 @@ class HttpsAsyncPostRequest extends AsyncTask<String, Void, String> {
 								httpResponse.getEntity().getContent(), "UTF-8"));
 						String line = null;
 						while ((line = reader.readLine()) != null) {
-							sBuffer.append(line);
+							mBuffer.append(line);
 						}
-						Log.d(TAG, sBuffer.toString());
+						Log.d(TAG, mBuffer.toString());
 					} catch (Exception e) {
 						Log.e("https", e.getMessage());
 					} finally {
@@ -104,103 +106,23 @@ class HttpsAsyncPostRequest extends AsyncTask<String, Void, String> {
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 			e.printStackTrace();
-		} finally {
-			Log.e(TAG, "finally");
 		}
 
-		return null;
-	}
-
-	String HandleSubCommandGetFileList(String token) {
-		final String HTTPS_URL = Common.ServerIp + "/client_api/file_list.php";
-
-		HttpPost request = new HttpPost(HTTPS_URL);
-		HttpClient httpClient = HttpUtils.getHttpsClient();
-		httpClient.getParams().setParameter(
-				CoreConnectionPNames.CONNECTION_TIMEOUT, 60000);
-		httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT,
-				60000);
-
-		try {
-			List<NameValuePair> mNameValuePair = new ArrayList<NameValuePair>();
-
-			mNameValuePair.add(new BasicNameValuePair("token", token));
-			mNameValuePair.add(new BasicNameValuePair("device", "android"));
-
-			HttpEntity httpEntity = new UrlEncodedFormEntity(mNameValuePair,
-					"utf-8");
-
-			request.setEntity(httpEntity);
-
-			HttpResponse httpResponse = httpClient.execute(request);
-			if (httpResponse != null) {
-				StatusLine statusLine = httpResponse.getStatusLine();
-				if (statusLine != null
-						&& statusLine.getStatusCode() == HttpStatus.SC_OK) {
-					BufferedReader reader = null;
-					try {
-						reader = new BufferedReader(new InputStreamReader(
-								httpResponse.getEntity().getContent(), "UTF-8"));
-						String line = null;
-						while ((line = reader.readLine()) != null) {
-							sBuffer.append(line);
-						}
-						Log.d(TAG, sBuffer.toString());
-					} catch (Exception e) {
-						Log.e("https", e.getMessage());
-					} finally {
-						if (reader != null) {
-							reader.close();
-							reader = null;
-						}
-					}
-				}
-			}
-		} catch (Exception e) {
-			Log.e(TAG, e.getMessage());
-			e.printStackTrace();
-		} finally {
-			Log.e(TAG, "finally");
-		}
-
-		return null;
+		return mBuffer.toString();
 	}
 
 	@Override
 	protected String doInBackground(String... params) {
-		String subCommand = params[0];
-
-		if (subCommand.equals("logincheck")) {
-			if (params.length == 3) {
-				return HandleSubCommandLogin(params[1], params[2]);
-			}
-		} else if (subCommand.equals("file_list")) {
-			if (params.length == 2) {
-				HandleSubCommandGetFileList("token");
-			}
-		} else {
-			try {
-				String s = httpUtils
-						.doHttpsPost(
-								Common.ServerIp + "/session/logincheck.php",
-								"device=android&username=test&password=password");
-				Log.d(TAG, s);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				Log.e(TAG, e.toString());
-				e.printStackTrace();
-			}
-		}
-		return null;
+		return doCommon(params);
 	}
 
 	@Override
 	protected void onPostExecute(String result) {
-		if (!TextUtils.isEmpty(sBuffer.toString())) {
+		if (!TextUtils.isEmpty(result)) {
 			Message message = new Message();
 			message.what = messageWhat;
 			Bundle bundle = new Bundle();
-			bundle.putString("data", sBuffer.toString());
+			bundle.putString("data", result);
 			message.setData(bundle);
 			handler.sendMessage(message);
 		}
