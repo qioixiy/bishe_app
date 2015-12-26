@@ -120,7 +120,7 @@ public class FileDownloader {
 
 			if (conn.getResponseCode() == 200) {
 				this.fileSize = conn.getContentLength();// 根据响应获取文件大小
-				if (this.fileSize <= 0)
+				if (this.fileSize < 0)
 					throw new RuntimeException("Unkown file size ");
 
 				String filename = getFileName(conn);// 获取文件名称
@@ -150,8 +150,7 @@ public class FileDownloader {
 				throw new RuntimeException("server no response ");
 			}
 		} catch (Exception e) {
-			print(e.toString());
-			throw new RuntimeException("don't connection this url");
+			throw new RuntimeException(e.toString());
 		}
 	}
 
