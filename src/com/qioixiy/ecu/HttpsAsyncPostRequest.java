@@ -20,6 +20,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
 
 import com.common.Common;
+import com.common.SessionManager;
 import com.common.httpUtils;
 
 import android.os.AsyncTask;
@@ -61,6 +62,9 @@ class HttpsAsyncPostRequest extends AsyncTask<String, Void, String> {
 		StringBuffer mBuffer = new StringBuffer();
 		List<NameValuePair> mNameValuePair = new ArrayList<NameValuePair>();
 		mNameValuePair.add(new BasicNameValuePair("device", "android"));
+		mNameValuePair.add(new BasicNameValuePair("token", SessionManager
+				.GetInstance().getToken()));
+
 		for (int index = 1; index < strings.length;) {
 			mNameValuePair.add(new BasicNameValuePair(strings[index++],
 					strings[index++]));

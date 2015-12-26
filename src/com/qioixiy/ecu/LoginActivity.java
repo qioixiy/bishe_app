@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.common.Common;
 import com.common.LoadingDialog;
+import com.common.SessionManager;
 import com.qioixiy.R;
 
 import android.app.Activity;
@@ -50,6 +51,7 @@ public class LoginActivity extends Activity {
 						String token = jsonObj.getString("token");
 						String errString = jsonObj.getString("errString");
 						if (status.equals("ok")) {
+							SessionManager.GetInstance().setToken(token);
 							Intent intent = new Intent(LoginActivity.this,
 									MainActivity.class);
 							String message = "test";

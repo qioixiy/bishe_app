@@ -81,10 +81,8 @@ public class MainActivity extends Activity {
 	private void GotoFileListActivity() {
 		if (httpsRequest == null || httpsRequest.getStatus() == Status.FINISHED) {
 			httpsRequest = new HttpsAsyncPostRequest(handler, 0);
-			String token = "";
 
-			httpsRequest.execute(Common.ServerIp + "/client_api/file_list.php",
-					"token", token);
+			httpsRequest.execute(Common.ServerIp + "/client_api/file_list.php");
 		}
 	}
 
