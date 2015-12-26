@@ -6,6 +6,7 @@ import org.json.JSONTokener;
 
 import android.os.Bundle;
 
+import com.common.Common;
 import com.common.LoadingDialog;
 import com.qioixiy.R;
 
