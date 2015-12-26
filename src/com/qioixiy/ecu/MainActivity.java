@@ -55,6 +55,13 @@ public class MainActivity extends Activity {
 	private HttpsAsyncPostRequest httpsRequest = null;
 
 	private String downloadFilename;
+	private boolean UpdateCheckFlag = false;
+
+	private String download_filename;
+	private String download_size;
+	private String download_time;
+	private String download_version;
+	private String download_date;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +116,8 @@ public class MainActivity extends Activity {
 		startActivity(intent);
 	}
 
-	private void UpdateCheck() {
+	private void UpdateCheck(boolean flag) {
+		UpdateCheckFlag = flag;
 		HttpsAsyncPostRequest mHttpsAsyncRequest = new HttpsAsyncPostRequest(
 				new Handler() {
 					public void handleMessage(Message msg) {
@@ -123,19 +131,10 @@ public class MainActivity extends Activity {
 							Cursor cursor = db.query("updateTable", null, null,
 									null, null, null, null);
 							String db_filename = "";
-							String db_size = null;
-							String db_time = null;
-							String db_version = null;
-							String db_date = null;
 							if (cursor.moveToFirst()) {
 								for (int i = 0; i < cursor.getCount(); i++) {
 									cursor.move(i);
-									int db_id = cursor.getInt(0);
 									db_filename = cursor.getString(1);
-									db_size = cursor.getString(2);
-									db_time = cursor.getString(3);
-									db_version = cursor.getString(4);
-									db_date = cursor.getString(5);
 								}
 							}
 
@@ -155,30 +154,16 @@ public class MainActivity extends Activity {
 										"yyyy-MM-dd HH:mm:ss");
 								date = df.parse(time);
 								boolean newer = !db_filename.equals(filename);
-								newer = true;
 								// update
 								if (newer) {
 									downloadFlag = true;
 									downloadFilename = filename;
-									final ContentValues cv = new ContentValues();
-									cv.put("filename", filename);
-									cv.put("size", size);
-									cv.put("time", time);
-									cv.put("version", version);
-									cv.put("date", date.toString());
-									int res = db
-											.update("updateTable", cv,
-													"filename='" + filename
-															+ "'", null);
-									if (res == 0) {
-										long res1 = db.insert("updateTable",
-												null, cv);
-										if (res1 == -1) {
-											Toast.makeText(activity,
-													"更新下载记录失败",
-													Toast.LENGTH_SHORT).show();
-										}
-									}
+
+									download_filename = filename;
+									download_size = size;
+									download_time = time;
+									download_version = version;
+									download_date = date.toString();
 								}
 							} catch (JSONException ex) {
 								Log.e(TAG, ex.getMessage());
@@ -186,12 +171,27 @@ public class MainActivity extends Activity {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
+							db.close();
+							if (UpdateCheckFlag) {
+								if (downloadFlag) {
+									Intent intent = new Intent(
+											MainActivity.this,
+											DownloadFileActivity.class);
+									String url = Common.ServerIp
+											+ "/main/download.php"
+											+ "?filename=" + downloadFilename;
+									intent.putExtra("url", url);
+									intent.putExtra("fileName",
+											downloadFilename);
+									startActivity(intent);
+									break;
+								}
+							}
 							// 动态加载布局生成View对象
 							LayoutInflater inflater = getLayoutInflater();
-							View layout = inflater
-									.inflate(
-											R.layout.dialog_alert,
-											(ViewGroup) findViewById(R.id.dialog_alert));
+							View layout = inflater.inflate(
+									R.layout.dialog_alert,
+									(ViewGroup) findViewById(R.id.dialog_alert));
 							((TextView) layout
 									.findViewById(R.id.dialog_alert_textview))
 									.setText("已经是最新");
@@ -215,10 +215,20 @@ public class MainActivity extends Activity {
 														DownloadFileActivity.class);
 												String url = Common.ServerIp
 														+ "/main/download.php"
-														+ "?filename=" + downloadFilename;
+														+ "?filename="
+														+ downloadFilename;
 												intent.putExtra("url", url);
 												intent.putExtra("fileName",
 														downloadFilename);
+												ArrayList<String> al = new ArrayList<String>();
+
+												al.add(download_filename);
+												al.add(download_size);
+												al.add(download_time);
+												al.add(download_version);
+												al.add(download_date);
+												intent.putStringArrayListExtra(
+														"extData", al);
 												startActivity(intent);
 											}
 										});
@@ -246,7 +256,7 @@ public class MainActivity extends Activity {
 						R.array.home_grid_texts);
 				switch (arg2) {
 				case 0:
-					UpdateCheck();
+					UpdateCheck(false);
 					return;
 				case 1:
 					GotoFileListActivity();
@@ -254,7 +264,8 @@ public class MainActivity extends Activity {
 				case 2:
 					break;
 				case 3:
-					break;
+					UpdateCheck(true);
+					return;
 				case 4:
 					break;
 				case 5:

@@ -1,14 +1,18 @@
 package com.qioixiy.ecu;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import com.qioixiy.R;
 import com.qioixiy.FileDownloader.DownloadProgressListener;
 import com.qioixiy.FileDownloader.FileDownloader;
+import com.qioixiy.service.DBMisc;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -23,11 +27,19 @@ import android.widget.Toast;
 
 public class DownloadFileActivity extends Activity {
 	protected static final String TAG = "DownloadFileActivity";
+	DownloadFileActivity activity = this;
 	private String downloadPath = null;
 	private String fileName = null;
 	private EditText downloadpathText;
 	private TextView resultView;
 	private ProgressBar progressBar;
+
+	private String download_filename;
+	private String download_size;
+	private String download_time;
+	private String download_version;
+	private String download_date;
+
 	/**
 	 * 当Handler被创建会关联到创建它的当前线程的消息队列，该类用于往消息队列发送消息 消息队列中的消息由当前线程内部进行处理
 	 */
@@ -44,8 +56,29 @@ public class DownloadFileActivity extends Activity {
 				resultView.setText(result + "%");
 
 				if (progressBar.getProgress() == progressBar.getMax()) {
-					Toast.makeText(DownloadFileActivity.this, fileName + "下载成功",
-							1).show();
+					Toast.makeText(DownloadFileActivity.this,
+							fileName + "下载成功", 1).show();
+
+					if (null != download_filename) {
+						DBMisc dbMisc = new DBMisc(
+								activity.getApplicationContext());
+						SQLiteDatabase db = dbMisc.getWritableDatabase();
+						final ContentValues cv = new ContentValues();
+						cv.put("filename", download_filename);
+						cv.put("size", download_size);
+						cv.put("time", download_time);
+						cv.put("version", download_version);
+						cv.put("date", download_date);
+						int res = db.update("updateTable", cv, "filename='"
+								+ download_filename + "'", null);
+						if (res == 0) {
+							long res1 = db.insert("updateTable", null, cv);
+							if (res1 == -1) {
+								Toast.makeText(activity, "更新下载记录失败",
+										Toast.LENGTH_SHORT).show();
+							}
+						}
+					}
 					DownloadFileActivity.this.finish();
 				}
 				break;
@@ -65,6 +98,16 @@ public class DownloadFileActivity extends Activity {
 		Intent intent = getIntent();
 		String url = intent.getStringExtra("url");
 		String fileName = intent.getStringExtra("fileName");
+
+		ArrayList<String> as = intent.getStringArrayListExtra("extData");
+		if (null != as) {
+			download_filename = as.get(0);
+			download_size = as.get(1);
+			download_time = as.get(2);
+			download_version = as.get(3);
+			download_date = as.get(4);
+		}
+
 		progressBar = (ProgressBar) this.findViewById(R.id.downloadbar);
 		resultView = (TextView) this.findViewById(R.id.resultView);
 
