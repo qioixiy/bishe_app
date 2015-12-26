@@ -1,4 +1,4 @@
-package com.qioixiy.network;
+package com.qioixiy.FileDownloader;
 
 import java.io.File;
 import java.io.RandomAccessFile;

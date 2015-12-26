@@ -3,8 +3,8 @@ package com.qioixiy.ecu;
 import java.io.File;
 
 import com.qioixiy.R;
-import com.qioixiy.network.DownloadProgressListener;
-import com.qioixiy.network.FileDownloader;
+import com.qioixiy.FileDownloader.DownloadProgressListener;
+import com.qioixiy.FileDownloader.FileDownloader;
 
 import android.app.Activity;
 import android.content.Context;
