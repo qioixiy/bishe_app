@@ -30,6 +30,7 @@
     <string name="s_simpleCursorAdapter_btn">simpleCursorAdapter</string>
     <string name="s_simpleAdapter_btn">simpleAdapter</string>
     <string name="s_myAdapter_btn">myAdapter</string>
-    <string name="s_view_btn">下载</string>
+    <string name="s_btn_download">下载</string>
+    <string name="s_btn_showdetail">详细信息</string>
 
 </resources>

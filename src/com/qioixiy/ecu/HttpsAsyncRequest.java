@@ -19,6 +19,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
 
+import com.common.Common;
 import com.common.httpUtils;
 
 import android.os.AsyncTask;
@@ -55,7 +56,7 @@ class HttpsAsyncRequest extends AsyncTask<String, Void, String> {
 	}
 
 	private String HandleSubCommandLogin(String username, String password) {
-		final String HTTPS_URL = httpUtils.hostname + "/session/logincheck.php";
+		final String HTTPS_URL = Common.ServerIp + "/session/logincheck.php";
 
 		HttpPost request = new HttpPost(HTTPS_URL);
 		HttpClient httpClient = HttpUtils.getHttpsClient();
@@ -111,7 +112,7 @@ class HttpsAsyncRequest extends AsyncTask<String, Void, String> {
 	}
 
 	String HandleSubCommandGetFileList(String token) {
-		final String HTTPS_URL = httpUtils.hostname + "/client_api/file_list.php";
+		final String HTTPS_URL = Common.ServerIp + "/client_api/file_list.php";
 
 		HttpPost request = new HttpPost(HTTPS_URL);
 		HttpClient httpClient = HttpUtils.getHttpsClient();
@@ -181,7 +182,7 @@ class HttpsAsyncRequest extends AsyncTask<String, Void, String> {
 			try {
 				String s = httpUtils
 						.doHttpsPost(
-								httpUtils.hostname + "/session/logincheck.php",
+								Common.ServerIp + "/session/logincheck.php",
 								"device=android&username=test&password=password");
 				Log.d(TAG, s);
 			} catch (Exception e) {

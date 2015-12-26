@@ -1,29 +1,20 @@
-/**
- * 
- */
 package com.qioixiy.ecu;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.common.Common;
-import com.common.httpUtils;
 import com.qioixiy.R;
 
-import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Handler.Callback;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,31 +25,29 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class DownloadFileListView extends ListActivity {
+public class LocalFileListView extends ListActivity {
 	private Handler handler;
-	private static final String TAG = "DownloadFileListView";
+	private static final String TAG = "LocalFileListView";
 	private List<Map<String, Object>> mData;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Intent intent = getIntent();
-		ArrayList<?> mArrayList = intent.getStringArrayListExtra("file_list");
 		mData = new ArrayList<Map<String, Object>>();
-		for (int i = 0; i < mArrayList.size(); i++) {
+		File[] files = new File(getExternalFilesDir("download").toString())
+				.listFiles();
+		for (int i = 0; i < files.length; i++) {
+			String file = files[i].toString();
+			String fileName = getFileName(file);
 			Map<String, Object> map = new HashMap<String, Object>();
-			String title = (String) mArrayList.get(i);
-			String info = (String) mArrayList.get(i);
-			int img = R.drawable.icon;
-
-			map.put("title", title);
-			map.put("info", info);
-			map.put("img", img);
-
+			map.put("title", fileName);
+			map.put("info", fileName);
+			map.put("img", R.drawable.app_local);
 			mData.add(map);
 		}
-		DownloadFileListViewAdapter adapter = new DownloadFileListViewAdapter(
-				this);
+		Log.d(TAG, "done");
+
+		LocalFileListViewAdapter adapter = new LocalFileListViewAdapter(this);
 		setListAdapter(adapter);
 		handler = new Handler() {
 			public void handleMessage(Message msg) {
@@ -66,7 +55,7 @@ public class DownloadFileListView extends ListActivity {
 				case 0:
 					String url = msg.getData().getString("url");
 					String fileName = msg.getData().getString("fileName");
-					Intent intent = new Intent(DownloadFileListView.this,
+					Intent intent = new Intent(LocalFileListView.this,
 							DownloadFileActivity.class);
 					intent.putExtra("url", url);
 					intent.putExtra("fileName", fileName);
@@ -91,11 +80,11 @@ public class DownloadFileListView extends ListActivity {
 		public Button viewBtn;
 	}
 
-	public class DownloadFileListViewAdapter extends BaseAdapter {
+	public class LocalFileListViewAdapter extends BaseAdapter {
 
 		private LayoutInflater mInflater;
 
-		public DownloadFileListViewAdapter(Context context) {
+		public LocalFileListViewAdapter(Context context) {
 			this.mInflater = LayoutInflater.from(context);
 		}
 
@@ -125,12 +114,13 @@ public class DownloadFileListView extends ListActivity {
 
 				holder = new ViewHolder();
 
-				convertView = mInflater.inflate(R.layout.download_viewlist, null);
+				convertView = mInflater.inflate(R.layout.localfile_viewlist,
+						null);
 				holder.img = (ImageView) convertView.findViewById(R.id.img);
 				holder.title = (TextView) convertView.findViewById(R.id.title);
 				holder.info = (TextView) convertView.findViewById(R.id.info);
 				holder.viewBtn = (Button) convertView
-						.findViewById(R.id.btn_viewlist_download);
+						.findViewById(R.id.btn_viewlist_local);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
@@ -148,9 +138,9 @@ public class DownloadFileListView extends ListActivity {
 				public void onClick(View v) {
 					Button btn = (Button) v;
 					String fileName = (String) btn.getTag();
-					urlIntentDownloadFileActivity(Common.ServerIp + "/main/download.php"
-					+ "?filename=" + fileName,
-					fileName);
+					urlIntentDownloadFileActivity(Common.ServerIp
+							+ "/main/download.php" + "?filename=" + fileName,
+							fileName);
 				}
 			});
 
@@ -167,5 +157,18 @@ public class DownloadFileListView extends ListActivity {
 			message.setData(bundle);
 			handler.sendMessage(message);
 		}
+	}
+
+	private String getFileName(String pathandname) {
+
+		int start = pathandname.lastIndexOf("/");
+		int end = pathandname.lastIndexOf(".");
+		int len = pathandname.length();
+		if (start != -1 && end != -1) {
+			return pathandname.substring(start + 1, len);
+		} else {
+			return null;
+		}
+
 	}
 }

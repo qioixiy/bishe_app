@@ -85,6 +85,28 @@ public class MainActivity extends Activity {
 			httpsRequest.execute("file_list", token);
 		}
 	}
+	private void GotoLocalFileListViewActivity() {
+		Intent intent = new Intent(MainActivity.this,
+				LocalFileListView.class);
+		startActivity(intent);
+	}
+	
+	private void CheckUpdate() {
+		//client_api/update_check.php;
+		HttpsAsyncRequest mHttpsAsyncRequest = new HttpsAsyncRequest(new Handler(){
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
+				case 0:
+					
+					break;
+				}
+				super.handleMessage(msg);
+			}
+		}, 0);
+		String token = "";
+		mHttpsAsyncRequest.execute("file_list", token);
+	}
+
 	private void initView() {
 		gridview = (MyGridView) findViewById(R.id.gridview);
 		gridview.setAdapter(new MyGridAdapter(this));
@@ -97,12 +119,12 @@ public class MainActivity extends Activity {
 				String[] strs = getResources().getStringArray(
 						R.array.home_grid_texts);
 				switch(arg2) {
-				case 0: break;
+				case 0: CheckUpdate(); return;
 				case 1: GotoFileListActivity(); return;
 				case 2: break;
 				case 3: break;
 				case 4: break;
-				case 5: break;
+				case 5: GotoLocalFileListViewActivity(); return;
 				case 6: break;
 				case 7: break;
 				default: break;
