@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
 	static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
 	private MyGridView gridview;
 	private Handler handler;
-	private HttpsAsyncRequest httpsRequest = null;
+	private HttpsAsyncPostRequest httpsRequest = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +80,7 @@ public class MainActivity extends Activity {
 	private void GotoFileListActivity() {
 		if (httpsRequest == null
 				|| httpsRequest.getStatus() == Status.FINISHED) {
-			httpsRequest = new HttpsAsyncRequest(handler, 0);
+			httpsRequest = new HttpsAsyncPostRequest(handler, 0);
 			String token = "";
 			httpsRequest.execute("file_list", token);
 		}
@@ -93,7 +93,7 @@ public class MainActivity extends Activity {
 	
 	private void CheckUpdate() {
 		//client_api/update_check.php;
-		HttpsAsyncRequest mHttpsAsyncRequest = new HttpsAsyncRequest(new Handler(){
+		HttpsAsyncPostRequest mHttpsAsyncRequest = new HttpsAsyncPostRequest(new Handler(){
 			public void handleMessage(Message msg) {
 				switch (msg.what) {
 				case 0:

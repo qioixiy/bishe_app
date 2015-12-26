@@ -25,7 +25,7 @@ import android.widget.TextView;
 
 public class LoginActivity extends Activity {
 	public static final String TAG = "LoginActivity";
-	private HttpsAsyncRequest httpsRequest;
+	private HttpsAsyncPostRequest httpsRequest;
 	private Handler handler;
 	private TextView debugView;
 	private LoadingDialog dialog;
@@ -104,7 +104,7 @@ public class LoginActivity extends Activity {
 			return;
 		}
 		if (httpsRequest == null || httpsRequest.getStatus() == Status.FINISHED) {
-			httpsRequest = new HttpsAsyncRequest(handler, 0);
+			httpsRequest = new HttpsAsyncPostRequest(handler, 0);
 			httpsRequest.execute(params0, params1, params2);
 		}
 

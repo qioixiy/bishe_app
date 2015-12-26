@@ -29,14 +29,14 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 
-class HttpsAsyncRequest extends AsyncTask<String, Void, String> {
+class HttpsAsyncPostRequest extends AsyncTask<String, Void, String> {
 
 	public static final String TAG = "HttpsAsyncRequest";
 	private Handler handler;
 	private int messageWhat;
 	private StringBuffer sBuffer = new StringBuffer();
 
-	public HttpsAsyncRequest(Handler _handler, int _messageWhat) {
+	public HttpsAsyncPostRequest(Handler _handler, int _messageWhat) {
 		this.handler = _handler;
 		this.messageWhat = _messageWhat;
 	}
