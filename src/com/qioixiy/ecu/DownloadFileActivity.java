@@ -61,18 +61,21 @@ public class DownloadFileActivity extends Activity {
 				// finish
 				if (progressBar.getProgress() == progressBar.getMax()) {
 					if (download_md5.equals("")) {
-						Toast.makeText(getApplicationContext(),
+						Toast.makeText(activity,
 								fileName + "下载成功", Toast.LENGTH_SHORT).show();
 					} else {
 						String md5 = MD5.md5sum(downloadPath + "/" + fileName);
 						if (md5.equalsIgnoreCase(download_md5)) {
-							Toast.makeText(getApplicationContext(),
-									fileName + "下载成功", Toast.LENGTH_SHORT).show();
+							Toast.makeText(activity,
+									fileName + "下载成功", Toast.LENGTH_SHORT)
+									.show();
 						} else {
-							Toast.makeText(getApplicationContext(),
-									fileName + "文件损坏", Toast.LENGTH_SHORT).show();
+							Toast.makeText(activity,
+									fileName + "文件损坏", Toast.LENGTH_SHORT)
+									.show();
 						}
 					}
+
 					if (null != download_filename) {
 						DBMisc dbMisc = new DBMisc(
 								activity.getApplicationContext());
