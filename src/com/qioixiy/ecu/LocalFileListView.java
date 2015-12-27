@@ -141,29 +141,14 @@ public class LocalFileListView extends ListActivity {
 
 				@Override
 				public void onClick(View v) {
+					Button btn = (Button) v;
+					String fileName = (String) btn.getTag();
+					String dir = getExternalFilesDir("download")
+							.getAbsolutePath();
+					String filePath = dir + "/" + fileName;
 
-					DBMisc dbMisc = new DBMisc(activity.getApplicationContext());
-					SQLiteDatabase db = dbMisc.getWritableDatabase();
-					Cursor cursor = db.query("updateTable", null, null, null,
-							null, null, null);
-					String db_filename = "";
-					String db_size = "";
-					String db_time = "";
-					String db_version = "";
-					String db_md5 = "";
-					String db_date = "";
-					if (cursor.moveToFirst()) {
-						for (int i = 0; i < cursor.getCount(); i++) {
-							cursor.move(i);
-							db_filename = cursor.getString(1);
-							db_size = cursor.getString(2);
-							db_time = cursor.getString(3);
-							db_version = cursor.getString(4);
-							db_md5 = cursor.getString(5);
-							db_date = cursor.getString(6);
-						}
-					}
-
+					String fileSize = com.common.FileSizeUtil
+							.getAutoFileOrFilesSize(filePath);
 					LayoutInflater inflater = getLayoutInflater();
 					View layout = inflater.inflate(R.layout.dialog_alert,
 							(ViewGroup) findViewById(R.id.dialog_alert));
@@ -172,10 +157,8 @@ public class LocalFileListView extends ListActivity {
 							.setNegativeButton("·µ»Ø", null);
 
 					((TextView) layout.findViewById(R.id.dialog_alert_textview))
-							.setText("filename: " + db_filename + "\nsize: "
-									+ db_size + " byte" + "\ntime: " + db_time
-									+ "\nversion: " + db_version + "\nmd5: "
-									+ db_md5 + "\ndate: " + db_date);
+							.setText("fileName: " + fileName + "\nsize: "
+									+ fileSize + "\ndir: " + dir);
 					ab.show();
 
 				}
