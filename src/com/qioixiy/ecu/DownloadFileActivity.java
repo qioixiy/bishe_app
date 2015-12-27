@@ -3,6 +3,7 @@ package com.qioixiy.ecu;
 import java.io.File;
 import java.util.ArrayList;
 
+import com.common.Common;
 import com.qioixiy.R;
 import com.qioixiy.FileDownloader.DownloadProgressListener;
 import com.qioixiy.FileDownloader.FileDownloader;
@@ -113,6 +114,14 @@ public class DownloadFileActivity extends Activity {
 
 		downloadPath = getExternalFilesDir("download").getAbsolutePath();
 		this.fileName = fileName;
+
+		if (!Common.NetWorkIsWifi(this)) {
+			startActivity(new Intent(
+					android.provider.Settings.ACTION_WIFI_SETTINGS));
+			DownloadFileActivity.this.finish();
+			return;
+		}
+
 		DownloadStart(url, fileName);
 	}
 
