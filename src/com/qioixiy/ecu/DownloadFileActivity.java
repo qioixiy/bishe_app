@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import com.common.Common;
+import com.common.MD5;
 import com.qioixiy.R;
 import com.qioixiy.FileDownloader.DownloadProgressListener;
 import com.qioixiy.FileDownloader.FileDownloader;
@@ -39,6 +40,7 @@ public class DownloadFileActivity extends Activity {
 	private String download_size;
 	private String download_time;
 	private String download_version;
+	private String download_md5;
 	private String download_date;
 
 	/**
@@ -56,10 +58,21 @@ public class DownloadFileActivity extends Activity {
 				int result = (int) (num * 100);
 				resultView.setText(result + "%");
 
+				// finish
 				if (progressBar.getProgress() == progressBar.getMax()) {
-					Toast.makeText(DownloadFileActivity.this,
-							fileName + "下载成功", 1).show();
-
+					if (download_md5.equals("")) {
+						Toast.makeText(getApplicationContext(),
+								fileName + "下载成功", Toast.LENGTH_SHORT).show();
+					} else {
+						String md5 = MD5.md5sum(downloadPath + "/" + fileName);
+						if (md5.equalsIgnoreCase(download_md5)) {
+							Toast.makeText(getApplicationContext(),
+									fileName + "下载成功", Toast.LENGTH_SHORT).show();
+						} else {
+							Toast.makeText(getApplicationContext(),
+									fileName + "文件损坏", Toast.LENGTH_SHORT).show();
+						}
+					}
 					if (null != download_filename) {
 						DBMisc dbMisc = new DBMisc(
 								activity.getApplicationContext());
@@ -69,6 +82,7 @@ public class DownloadFileActivity extends Activity {
 						cv.put("size", download_size);
 						cv.put("time", download_time);
 						cv.put("version", download_version);
+						cv.put("md5", download_md5);
 						cv.put("date", download_date);
 						int res = db.update("updateTable", cv, "filename='"
 								+ download_filename + "'", null);
@@ -84,8 +98,8 @@ public class DownloadFileActivity extends Activity {
 				}
 				break;
 			case -1:
-				Toast.makeText(DownloadFileActivity.this, R.string.error, 1)
-						.show();
+				Toast.makeText(DownloadFileActivity.this, R.string.error,
+						Toast.LENGTH_SHORT).show();
 				break;
 			}
 		}
@@ -106,7 +120,8 @@ public class DownloadFileActivity extends Activity {
 			download_size = as.get(1);
 			download_time = as.get(2);
 			download_version = as.get(3);
-			download_date = as.get(4);
+			download_md5 = as.get(4);
+			download_date = as.get(5);
 		}
 
 		progressBar = (ProgressBar) this.findViewById(R.id.downloadbar);

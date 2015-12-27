@@ -19,7 +19,7 @@ public class DBMisc extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL("CREATE TABLE IF NOT EXISTS updateTable (id integer primary key autoincrement, filename varchar(100), size varchar(100), time varchar(100), version varchar(100), date varchar(100))");
+		db.execSQL("CREATE TABLE IF NOT EXISTS updateTable (id integer primary key autoincrement, filename varchar(100), size varchar(100), time varchar(100), version varchar(100),md5 varchar(100), date varchar(100))");
 	}
 
 	@Override

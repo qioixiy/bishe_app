@@ -61,6 +61,7 @@ public class MainActivity extends Activity {
 	private String download_size;
 	private String download_time;
 	private String download_version;
+	private String download_md5;
 	private String download_date;
 
 	@Override
@@ -143,6 +144,7 @@ public class MainActivity extends Activity {
 							String size = null;
 							String time = null;
 							String version = null;
+							String md5 = null;
 							Date date = null;
 							try {
 								JSONObject jsonObj = new JSONObject(objStr);
@@ -150,6 +152,7 @@ public class MainActivity extends Activity {
 								size = jsonObj.getString("size");
 								time = jsonObj.getString("time");
 								version = jsonObj.getString("version");
+								md5 = jsonObj.getString("md5");
 								SimpleDateFormat df = new SimpleDateFormat(
 										"yyyy-MM-dd HH:mm:ss");
 								date = df.parse(time);
@@ -163,6 +166,7 @@ public class MainActivity extends Activity {
 									download_size = size;
 									download_time = time;
 									download_version = version;
+									download_md5 = md5;
 									download_date = date.toString();
 								}
 							} catch (JSONException ex) {
@@ -226,6 +230,7 @@ public class MainActivity extends Activity {
 												al.add(download_size);
 												al.add(download_time);
 												al.add(download_version);
+												al.add(download_md5);
 												al.add(download_date);
 												intent.putStringArrayListExtra(
 														"extData", al);
