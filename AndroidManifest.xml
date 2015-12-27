@@ -65,6 +65,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".DownloadActivity" />
         </activity>
+
+        <service android:name="com.qioixiy.ecu.ServiceUpdate" >
+        </service>
     </application>
 
 </manifest>
