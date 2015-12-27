@@ -22,11 +22,13 @@ import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -67,6 +69,8 @@ public class MainActivity extends Activity {
 	private String download_md5;
 	private String download_date;
 
+	private MsgReceiver msgReceiver;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -74,6 +78,12 @@ public class MainActivity extends Activity {
 		// Intent intent = getIntent();
 		// String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 		setContentView(R.layout.activity_main);
+		
+		msgReceiver = new MsgReceiver();
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction("com.example.communication.RECEIVER");
+		registerReceiver(msgReceiver, intentFilter);
+		
 		initView();
 		handler = new Handler() {
 			public void handleMessage(Message msg) {
@@ -295,5 +305,15 @@ public class MainActivity extends Activity {
 				Toast.makeText(MainActivity.this, "没有实现", 1).show();
 			}
 		});
+	}
+
+	private class MsgReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String s = intent.getStringExtra("msg");
+			if (s.equals("true")) {
+				UpdateCheck(false);
+			}
+		}
 	}
 }
