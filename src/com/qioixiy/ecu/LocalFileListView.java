@@ -8,10 +8,14 @@ import java.util.Map;
 
 import com.common.Common;
 import com.qioixiy.R;
+import com.qioixiy.service.DBMisc;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,14 +33,14 @@ public class LocalFileListView extends ListActivity {
 	private Handler handler;
 	private static final String TAG = "LocalFileListView";
 	private List<Map<String, Object>> mData;
+	private LocalFileListView activity = this;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mData = new ArrayList<Map<String, Object>>();
 		String path = getExternalFilesDir("download").toString();
-		File[] files = new File(path)
-				.listFiles();
+		File[] files = new File(path).listFiles();
 		for (int i = 0; i < files.length; i++) {
 			String file = files[i].toString();
 			String fileName = getFileName(file);
@@ -137,11 +141,43 @@ public class LocalFileListView extends ListActivity {
 
 				@Override
 				public void onClick(View v) {
-					Button btn = (Button) v;
-					String fileName = (String) btn.getTag();
-					urlIntentDownloadFileActivity(Common.ServerIp
-							+ "/main/download.php" + "?filename=" + fileName,
-							fileName);
+
+					DBMisc dbMisc = new DBMisc(activity.getApplicationContext());
+					SQLiteDatabase db = dbMisc.getWritableDatabase();
+					Cursor cursor = db.query("updateTable", null, null, null,
+							null, null, null);
+					String db_filename = "";
+					String db_size = "";
+					String db_time = "";
+					String db_version = "";
+					String db_md5 = "";
+					String db_date = "";
+					if (cursor.moveToFirst()) {
+						for (int i = 0; i < cursor.getCount(); i++) {
+							cursor.move(i);
+							db_filename = cursor.getString(1);
+							db_size = cursor.getString(2);
+							db_time = cursor.getString(3);
+							db_version = cursor.getString(4);
+							db_md5 = cursor.getString(5);
+							db_date = cursor.getString(6);
+						}
+					}
+
+					LayoutInflater inflater = getLayoutInflater();
+					View layout = inflater.inflate(R.layout.dialog_alert,
+							(ViewGroup) findViewById(R.id.dialog_alert));
+					AlertDialog.Builder ab = new AlertDialog.Builder(activity)
+							.setTitle("版本信息").setView(layout)
+							.setNegativeButton("返回", null);
+
+					((TextView) layout.findViewById(R.id.dialog_alert_textview))
+							.setText("filename: " + db_filename + "\nsize: "
+									+ db_size + " byte" + "\ntime: " + db_time
+									+ "\nversion: " + db_version + "\nmd5: "
+									+ db_md5 + "\ndate: " + db_date);
+					ab.show();
+
 				}
 			});
 

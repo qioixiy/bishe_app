@@ -78,12 +78,12 @@ public class MainActivity extends Activity {
 		// Intent intent = getIntent();
 		// String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 		setContentView(R.layout.activity_main);
-		
+
 		msgReceiver = new MsgReceiver();
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction("com.example.communication.RECEIVER");
 		registerReceiver(msgReceiver, intentFilter);
-		
+
 		initView();
 		handler = new Handler() {
 			public void handleMessage(Message msg) {
@@ -267,6 +267,43 @@ public class MainActivity extends Activity {
 				+ "/client_api/update_check.php");
 	}
 
+	private void VersionInfo() {
+		DBMisc dbMisc = new DBMisc(activity.getApplicationContext());
+		SQLiteDatabase db = dbMisc.getWritableDatabase();
+		Cursor cursor = db.query("updateTable", null, null, null, null, null,
+				null);
+		String db_filename = "";
+		String db_size = "";
+		String db_time = "";
+		String db_version = "";
+		String db_md5 = "";
+		String db_date = "";
+		if (cursor.moveToFirst()) {
+			for (int i = 0; i < cursor.getCount(); i++) {
+				cursor.move(i);
+				db_filename = cursor.getString(1);
+				db_size = cursor.getString(2);
+				db_time = cursor.getString(3);
+				db_version = cursor.getString(4);
+				db_md5 = cursor.getString(5);
+				db_date = cursor.getString(6);
+			}
+		}
+
+		LayoutInflater inflater = getLayoutInflater();
+		View layout = inflater.inflate(R.layout.dialog_alert,
+				(ViewGroup) findViewById(R.id.dialog_alert));
+		AlertDialog.Builder ab = new AlertDialog.Builder(activity)
+				.setTitle("版本信息").setView(layout).setNegativeButton("返回", null);
+
+		((TextView) layout.findViewById(R.id.dialog_alert_textview))
+				.setText("filename: " + db_filename + "\nsize: " + db_size
+						+ " byte" + "\ntime: " + db_time + "\nversion: "
+						+ db_version + "\nmd5: " + db_md5 + "\ndate: "
+						+ db_date);
+		ab.show();
+	}
+
 	private void initView() {
 		gridview = (MyGridView) findViewById(R.id.gridview);
 		gridview.setAdapter(new MyGridAdapter(this));
@@ -291,7 +328,8 @@ public class MainActivity extends Activity {
 					UpdateCheck(true);
 					return;
 				case 4:
-					break;
+					VersionInfo();
+					return;
 				case 5:
 					GotoLocalFileListViewActivity();
 					return;
