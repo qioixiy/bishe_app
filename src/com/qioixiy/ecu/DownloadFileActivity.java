@@ -11,8 +11,10 @@ import com.qioixiy.FileDownloader.FileDownloader;
 import com.qioixiy.service.DBMisc;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -31,7 +33,6 @@ public class DownloadFileActivity extends Activity {
 	protected static final String TAG = "DownloadFileActivity";
 	DownloadFileActivity activity = this;
 	private String downloadPath = null;
-	private String fileName = null;
 	private EditText downloadpathText;
 	private TextView resultView;
 	private ProgressBar progressBar;
@@ -42,6 +43,8 @@ public class DownloadFileActivity extends Activity {
 	private String download_version;
 	private String download_md5;
 	private String download_date;
+
+	private String download_url;
 
 	/**
 	 * 当Handler被创建会关联到创建它的当前线程的消息队列，该类用于往消息队列发送消息 消息队列中的消息由当前线程内部进行处理
@@ -61,18 +64,19 @@ public class DownloadFileActivity extends Activity {
 				// finish
 				if (progressBar.getProgress() == progressBar.getMax()) {
 					if (download_md5.equals("")) {
-						Toast.makeText(activity,
-								fileName + "下载成功", Toast.LENGTH_SHORT).show();
+						Toast.makeText(activity, download_filename + "下载成功",
+								Toast.LENGTH_SHORT).show();
 					} else {
-						String md5 = MD5.md5sum(downloadPath + "/" + fileName);
+						String md5 = MD5.md5sum(downloadPath + "/"
+								+ download_filename);
 						if (md5.equalsIgnoreCase(download_md5)) {
 							Toast.makeText(activity,
-									fileName + "下载成功", Toast.LENGTH_SHORT)
-									.show();
+									download_filename + "下载成功",
+									Toast.LENGTH_SHORT).show();
 						} else {
 							Toast.makeText(activity,
-									fileName + "文件损坏", Toast.LENGTH_SHORT)
-									.show();
+									download_filename + "文件损坏",
+									Toast.LENGTH_SHORT).show();
 						}
 					}
 
@@ -116,6 +120,8 @@ public class DownloadFileActivity extends Activity {
 		Intent intent = getIntent();
 		String url = intent.getStringExtra("url");
 		String fileName = intent.getStringExtra("fileName");
+		download_url = url;
+		download_filename = fileName;
 
 		ArrayList<String> as = intent.getStringArrayListExtra("extData");
 		if (null != as) {
@@ -126,21 +132,43 @@ public class DownloadFileActivity extends Activity {
 			download_md5 = as.get(4);
 			download_date = as.get(5);
 		}
-
 		progressBar = (ProgressBar) this.findViewById(R.id.downloadbar);
 		resultView = (TextView) this.findViewById(R.id.resultView);
 
 		downloadPath = getExternalFilesDir("download").getAbsolutePath();
-		this.fileName = fileName;
 
 		if (!Common.NetWorkIsWifi(this)) {
-			startActivity(new Intent(
-					android.provider.Settings.ACTION_WIFI_SETTINGS));
-			DownloadFileActivity.this.finish();
-			return;
-		}
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+					DownloadFileActivity.this);
+			builder.setTitle("提示");
+			builder.setMessage("当前没有连接到WIFI，是否继续使用移动网络");
+			builder.setIcon(R.drawable.icon);
+			builder.setPositiveButton("设置",
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dlg, int which) {
+							dlg.dismiss();
 
-		DownloadStart(url, fileName);
+							startActivity(new Intent(
+									android.provider.Settings.ACTION_WIFI_SETTINGS));
+							DownloadFileActivity.this.finish();
+						}
+					});
+			builder.setNegativeButton("继续使用",
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dlg, int which) {
+							dlg.dismiss();
+
+							String s1 = download_url;
+							String s2 = download_filename;
+							DownloadStart(download_url, download_filename);
+						}
+					});
+			builder.create().show();
+		} else {
+			DownloadStart(url, fileName);
+		}
 	}
 
 	void DownloadStart(String url, String fileName) {
