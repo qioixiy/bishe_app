@@ -336,13 +336,18 @@ public class MainActivity extends Activity {
 				case 6:
 					break;
 				case 7:
-					break;
+					Exit();
+					return;
 				default:
 					break;
 				}
 				Toast.makeText(MainActivity.this, "没有实现", 1).show();
 			}
 		});
+	}
+
+	private void Exit() {
+		finish();
 	}
 
 	private class MsgReceiver extends BroadcastReceiver {
